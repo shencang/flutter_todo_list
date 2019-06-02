@@ -32,6 +32,10 @@ class Tasks {
 
   bool operator ==(o) => o is Tasks && o.id == id;
 
+
+
+  ///修改数据
+  ///
   Tasks.update(
       {@required this.id,
       @required this.title,

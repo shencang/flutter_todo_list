@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/bloc/bloc_provider.dart';
 import 'package:flutter_todo_list/pages/tasks/bloc/task_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_todo_list/pages/labels/label_bloc.dart';
 import 'package:flutter_todo_list/pages/labels/label_widget.dart';
 import 'package:flutter_todo_list/pages/projects/project_bloc.dart';
 import 'package:flutter_todo_list/pages/projects/project_widget.dart';
+import 'package:flutter_todo_list/pages/user/userpage.dart';
 
 class SideDrawer extends StatelessWidget {
   @override
@@ -21,26 +24,35 @@ class SideDrawer extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text("作者名字"),
+            onDetailsPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<bool>(builder: (context) => UserScreen()),
+              );
+            },
             accountEmail: Text("作者邮箱"),
             otherAccountsPictures: <Widget>[
+
               IconButton(
                   icon: Icon(
-                    Icons.info,
+                    Icons.arrow_forward_ios,
                     color: Colors.white,
-                    size: 36.0,
+                    size: 24.0,
                   ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute<bool>(
-                          builder: (context) => AboutUsScreen()),
+                          builder: (context) => UserScreen()),
                     );
                   })
             ],
-            currentAccountPicture: CircleAvatar(
+             currentAccountPicture:
+             CircleAvatar(
               backgroundColor: Theme.of(context).accentColor,
               backgroundImage: AssetImage("assets/profile_pics.jpg"),
             ),
+
           ),
           ListTile(
               leading: Icon(Icons.inbox),
@@ -73,6 +85,40 @@ class SideDrawer extends StatelessWidget {
           BlocProvider(
             bloc: LabelBloc(LabelDB.get()),
             child: LabelPage(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                top: MediaQueryData.fromWindow(window).size.height / 4.2),
+            child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<bool>(
+                      builder: (context) => AboutUsScreen()),
+                );
+              },
+//            onTap: () {
+//              homeBloc.applyFilter("关于", Filter.byNextWeek());
+//              Navigator.pop(context);
+//            },
+              leading: Icon(Icons.add_circle_outline),
+              title: Text("登录"),
+            )
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<bool>(
+                    builder: (context) => AboutUsScreen()),
+              );
+            },
+//            onTap: () {
+//              homeBloc.applyFilter("关于", Filter.byNextWeek());
+//              Navigator.pop(context);
+//            },
+            leading: Icon(Icons.info_outline),
+            title: Text("关于"),
           )
         ],
       ),

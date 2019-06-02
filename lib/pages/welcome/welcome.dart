@@ -69,7 +69,7 @@ class _WelcomePageState extends State<WelcomePage>
         new Container(
           color: Colors.white,
           child: new Image.asset(
-          "assets/bg.jpeg",
+          "assets/welcome.png",
             fit: BoxFit.cover,
           ),
           constraints: new BoxConstraints.expand(),
