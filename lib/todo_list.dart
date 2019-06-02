@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             accentColor: Colors.orange,
-            primaryColor: const Color.fromARGB(0xff, 0xab, 0x82, 0xff)),
+            primaryColor: const Color.fromARGB(0xff, 0x7a, 0x37, 0x8b)),
         home: BlocProvider(
           bloc: HomeBloc(),
           child: HomePage(),
