@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/utils/app_constant.dart';
 import 'package:flutter_todo_list/utils/app_util.dart';
 
-class UserScreen extends StatelessWidget {
+class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("用户"),
+        title: Text("设置"),
       ),
       body: Container(
         child: Padding(
@@ -18,9 +18,11 @@ class UserScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
 
+
                   ],
                 ),
               ),
+
 
             ],
           ),

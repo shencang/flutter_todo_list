@@ -13,6 +13,8 @@ import 'package:flutter_todo_list/pages/labels/label_widget.dart';
 import 'package:flutter_todo_list/pages/projects/project_bloc.dart';
 import 'package:flutter_todo_list/pages/projects/project_widget.dart';
 import 'package:flutter_todo_list/pages/user/userpage.dart';
+import 'package:flutter_todo_list/pages/login/login_page.dart';
+import 'package:flutter_todo_list/pages/settings/settings_page.dart';
 
 class SideDrawer extends StatelessWidget {
   @override
@@ -35,7 +37,7 @@ class SideDrawer extends StatelessWidget {
 
               IconButton(
                   icon: Icon(
-                    Icons.arrow_forward_ios,
+                    Icons.settings,
                     color: Colors.white,
                     size: 24.0,
                   ),
@@ -43,15 +45,35 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute<bool>(
-                          builder: (context) => UserScreen()),
+                          builder: (context) => SettingsScreen()),
                     );
                   })
+
             ],
              currentAccountPicture:
-             CircleAvatar(
-              backgroundColor: Theme.of(context).accentColor,
-              backgroundImage: AssetImage("assets/profile_pics.jpg"),
-            ),
+             IconButton(
+                 icon:
+                 new CircleAvatar(
+                   radius: 36.0,
+                   backgroundImage: AssetImage(
+                       "assets/profile_pics.jpg",
+                   ),
+                 ),
+                 onPressed: () {
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute<bool>(
+                         builder: (context) => UserScreen()),
+                   );
+                 })
+//             CircleAvatar(
+//              backgroundColor: Theme.of(context).accentColor,
+//              backgroundImage: AssetImage("assets/profile_pics.jpg"),
+//            ),
+//              new Container(
+//                padding: EdgeInsets.only(left: MediaQueryData.fromWindow(window).size.width/6),
+//                child: new Image.asset("assets/profile_pics.jpg"),
+//              )
 
           ),
           ListTile(
@@ -94,7 +116,7 @@ class SideDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute<bool>(
-                      builder: (context) => AboutUsScreen()),
+                      builder: (context) => (LoginPage())),
                 );
               },
 //            onTap: () {
