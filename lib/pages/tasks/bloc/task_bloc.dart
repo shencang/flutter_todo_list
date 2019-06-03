@@ -10,6 +10,7 @@ import 'package:flutter_todo_list/pages/tasks/task_db.dart';
 class TaskBloc implements BlocBase {
   ///
   /// Synchronous Stream to handle the provision of the movie genres
+  /// 同步流来处理电影类型的提供
   ///
   StreamController<List<Tasks>> _taskController =
       StreamController<List<Tasks>>.broadcast();

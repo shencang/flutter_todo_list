@@ -13,6 +13,7 @@ import 'package:rxdart/subjects.dart';
 
 import '../task_db.dart';
 
+///
 class AddTaskBloc implements BlocBase {
   final TaskDB _taskDB;
   final ProjectDB _projectDB;

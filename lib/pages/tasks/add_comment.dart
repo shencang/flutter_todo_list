@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
+///添加评论
 class AddCommentDialog extends StatefulWidget {
   @override
   _AddCommentDialogState createState() => _AddCommentDialogState();

@@ -6,7 +6,7 @@ import 'package:flutter_todo_list/pages/projects/project_db.dart';
 import 'package:flutter_todo_list/utils/color_utils.dart';
 
 
-
+///项目的动画以及控制器
 class ProjectBloc implements BlocBase {
   StreamController<List<Project>> _projectController =
       StreamController<List<Project>>.broadcast();

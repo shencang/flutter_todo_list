@@ -1,3 +1,4 @@
+///启动图网址解析
 class AppConstance {
   static String App_HOST_URL = 'http://www.wsrtv.com.cn';
 

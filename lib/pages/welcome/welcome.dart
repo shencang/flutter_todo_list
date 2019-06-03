@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+
+///启动页的UI
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key key}) : super(key: key);
 

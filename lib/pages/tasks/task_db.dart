@@ -5,6 +5,7 @@ import 'package:flutter_todo_list/pages/labels/label.dart';
 import 'package:flutter_todo_list/pages/tasks/models/task_labels.dart';
 import 'package:sqflite/sqflite.dart';
 
+///任务的数据库操作
 class TaskDB {
   static final TaskDB _taskDb = TaskDB._internal(AppDatabase.get());
 

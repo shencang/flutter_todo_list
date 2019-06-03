@@ -2,6 +2,7 @@
 import 'package:flutter_todo_list/models/priority.dart';
 import 'package:meta/meta.dart';
 
+///任务定义
 class Tasks {
   static final tblTask = "Tasks";
   static final dbId = "id";

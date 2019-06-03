@@ -58,6 +58,10 @@ class AboutUsScreen extends StatelessWidget {
                         title: Text("发送邮件"),
                         subtitle: Text("2630610009@qq.com"),
                         onTap: () => launchURL(EMAIL_URL)),
+                    ListTile(
+                        leading: Icon(Icons.local_gas_station, color: Colors.black),
+                        title: Image.asset("assets/android_lab.jpg"),
+                        ),
                   ],
                 ),
               ),

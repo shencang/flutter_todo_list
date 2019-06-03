@@ -27,14 +27,14 @@ class SideDrawer extends StatelessWidget {
         padding: EdgeInsets.all(0.0),
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text("作者名字"),
+            accountName: Text("登录以查看更多"),
             onDetailsPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute<bool>(builder: (context) => UserScreen()),
               );
             },
-            accountEmail: Text("作者邮箱"),
+            accountEmail: Text("行知"),
             otherAccountsPictures: <Widget>[
 
               IconButton(
