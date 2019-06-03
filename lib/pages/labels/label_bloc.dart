@@ -5,6 +5,8 @@ import 'package:flutter_todo_list/pages/labels/label.dart';
 import 'package:flutter_todo_list/pages/labels/label_db.dart';
 import 'package:flutter_todo_list/utils/color_utils.dart';
 
+
+///标签的动画以及控制器
 class LabelBloc implements BlocBase {
   StreamController<List<Label>> _labelController =
       StreamController<List<Label>>.broadcast();

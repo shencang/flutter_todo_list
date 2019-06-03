@@ -26,6 +26,9 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   static Type _typeOf<T>() => T;
 }
 
+///
+///
+///
 class _BlocProviderState<T> extends State<BlocProvider<BlocBase>> {
   @override
   void dispose() {

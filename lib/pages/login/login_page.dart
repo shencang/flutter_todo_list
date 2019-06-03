@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:groovin_material_icons/groovin_material_icons.dart';
 
-
+///登录页面UI
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -13,6 +13,19 @@ class _LoginPageState extends State<LoginPage> {
   bool _isObscure = true;
   Color _eyeColor;
   List _loginMethod = [
+    {
+      "title": "facebook",
+      "icon": GroovinMaterialIcons.facebook,
+    },
+    {
+      "title": "google",
+      "icon": GroovinMaterialIcons.google,
+    },
+    {
+      "title": "twitter",
+      "icon": GroovinMaterialIcons.twitter,
+
+    },
 
   ];
 

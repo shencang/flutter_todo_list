@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/utils/app_constant.dart';
 import 'package:flutter_todo_list/utils/app_util.dart';
 
+///关于页面的UI
 class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

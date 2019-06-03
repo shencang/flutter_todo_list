@@ -6,6 +6,8 @@ import 'package:flutter_todo_list/utils/app_util.dart';
 import 'package:flutter_todo_list/utils/collapsable_expand_tile.dart';
 import 'package:flutter_todo_list/utils/color_utils.dart';
 
+
+///标签的添加界面的页面UI
 class AddLabel extends StatelessWidget {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();

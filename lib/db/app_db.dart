@@ -9,8 +9,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_todo_list/pages/tasks/models/tasks.dart';
 
-/// This is the singleton database class which handlers all database transactions
-/// All the task raw queries is handle here and return a Future<T> with result
+/// 这是处理所有数据库事务的单例数据库类
+/// 这里处理所有任务原始查询并返回带有结果的Future <T>
 class AppDatabase {
   static final AppDatabase _appDatabase = AppDatabase._internal();
 
@@ -26,19 +26,22 @@ class AppDatabase {
   bool didInit = false;
 
   /// Use this method to access the database which will provide you future of [Database],
+  /// 使用此方法访问数据库，为您提供[Database]的future，
   /// because initialization of the database (it has to go through the method channel)
+  /// 因为数据库的初始化（它必须通过方法通道）
   Future<Database> getDb() async {
     if (!didInit) await _init();
     return _database;
   }
 
+  ///创建数据库并添加对应的表
   Future _init() async {
-    // Get a location using path_provider
+    // 使用path_provider获取位置
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "tasks.db");
     _database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
-      // When creating the db, create the table
+      // 创建数据库时，请创建表
       await _createProjectTable(db);
       await _createTaskTable(db);
       await _createLabelTable(db);
@@ -54,6 +57,7 @@ class AppDatabase {
     didInit = true;
   }
 
+  ///创建项目表
   Future _createProjectTable(Database db) {
     return db.transaction((Transaction txn) async {
       txn.execute("CREATE TABLE ${Project.tblProject} ("
@@ -67,6 +71,7 @@ class AppDatabase {
     });
   }
 
+  ///创建标签表
   Future _createLabelTable(Database db) {
     return db.transaction((Transaction txn) {
       txn.execute("CREATE TABLE ${Label.tblLabel} ("
@@ -83,6 +88,7 @@ class AppDatabase {
     });
   }
 
+  ///创建任务表
   Future _createTaskTable(Database db) {
     return db.execute("CREATE TABLE ${Tasks.tblTask} ("
         "${Tasks.dbId} INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -94,4 +100,9 @@ class AppDatabase {
         "${Tasks.dbStatus} LONG,"
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
+
+  ///创建用户表
+//  Future _createUserTable(Database db){
+//    return db.execute("CREATE TABLE ${User}");
+//  }
 }

@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart';
 
+
+/// 标签的定义
 class Label {
   static final tblLabel = "labels";
   static final dbId = "id";

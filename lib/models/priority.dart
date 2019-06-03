@@ -1,6 +1,8 @@
+///优先级定义
 class Priority {
   final String dbPriority = "priority";
 }
+
 
 enum Status {
   PRIORITY_1,

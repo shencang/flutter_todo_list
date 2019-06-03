@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter_todo_list/bloc/bloc_provider.dart';
 import 'package:flutter_todo_list/pages/tasks/bloc/task_bloc.dart';
 
+
+/// 侧滑栏的设计
 class HomeBloc implements BlocBase {
   StreamController<String> _titleController =
       StreamController<String>.broadcast();

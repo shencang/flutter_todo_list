@@ -8,6 +8,8 @@ import 'package:flutter_todo_list/pages/home/home_bloc.dart';
 import 'package:flutter_todo_list/pages/labels/add_label.dart';
 import 'package:flutter_todo_list/pages/labels/label_bloc.dart';
 
+
+///标签子页面的UI
 class LabelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

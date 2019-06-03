@@ -2,6 +2,8 @@ import 'package:flutter_todo_list/db/app_db.dart';
 import 'package:flutter_todo_list/pages/labels/label.dart';
 import 'package:sqflite/sqflite.dart';
 
+
+/// 对标签的数据库操作
 class LabelDB {
   static final LabelDB _labelDb = LabelDB._internal(AppDatabase.get());
 

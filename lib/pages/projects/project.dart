@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
+/// 项目的定义
 class Project {
   static final tblProject = "projects";
   static final dbId = "id";
