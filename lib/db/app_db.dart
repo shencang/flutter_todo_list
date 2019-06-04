@@ -8,6 +8,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_todo_list/pages/tasks/models/tasks.dart';
+import 'package:mysql1/mysql1.dart';
 
 /// 这是处理所有数据库事务的单例数据库类
 /// 这里处理所有任务原始查询并返回带有结果的Future <T>
@@ -31,6 +32,7 @@ class AppDatabase {
   /// 因为数据库的初始化（它必须通过方法通道）
   Future<Database> getDb() async {
     if (!didInit) await _init();
+    await _connectionUserTable();
     return _database;
   }
 
@@ -101,8 +103,16 @@ class AppDatabase {
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  ///创建用户表
-//  Future _createUserTable(Database db){
-//    return db.execute("CREATE TABLE ${User}");
-//  }
+  ///连接用户表
+  Future _connectionUserTable() async{
+    var settings = new ConnectionSettings(
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: 'jinhao',
+        db: 'world'
+    );
+    var conn = await MySqlConnection.connect(settings);
+    print("===============>${conn.toString()}");
+  }
 }
