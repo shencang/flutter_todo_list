@@ -32,7 +32,7 @@ class AppDatabase {
   /// 因为数据库的初始化（它必须通过方法通道）
   Future<Database> getDb() async {
     if (!didInit) await _init();
-    await _connectionUserTable();
+   // await _connectionUserTable();
     return _database;
   }
 
@@ -103,7 +103,7 @@ class AppDatabase {
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  ///连接用户表
+  ///连接用户表[还有问题，暂时不能使用]
   Future _connectionUserTable() async{
     var settings = new ConnectionSettings(
         host: 'localhost',
