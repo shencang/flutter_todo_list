@@ -26,7 +26,7 @@ class AboutUsScreen extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.update, color: Colors.black),
                       title: Text("版本"),
-                      subtitle: Text("0.1.0"),
+                      subtitle: Text("0.1.3"),
                     )
                   ],
                 ),
