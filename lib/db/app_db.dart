@@ -103,16 +103,5 @@ class AppDatabase {
         "FOREIGN KEY(${Tasks.dbProjectID}) REFERENCES ${Project.tblProject}(${Project.dbId}) ON DELETE CASCADE);");
   }
 
-  ///连接用户表[还有问题，暂时不能使用]
-  Future _connectionUserTable() async{
-    var settings = new ConnectionSettings(
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: 'jinhao',
-        db: 'world'
-    );
-    var conn = await MySqlConnection.connect(settings);
-    print("===============>${conn.toString()}");
-  }
+
 }
