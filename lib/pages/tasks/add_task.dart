@@ -236,11 +236,14 @@ class AddTaskScreen extends StatelessWidget {
   }
 
   GestureDetector buildContainer(BuildContext context, Status status) {
+    print('_!_!_!_!_!_!_!_!_!_!_!__!_!_!_!');
+    print(status);
     AddTaskBloc createTaskBloc = BlocProvider.of(context);
     return GestureDetector(
         onTap: () {
           createTaskBloc.updatePriority(status);
           Navigator.pop(context, status);
+          print(status);
         },
         child: Container(
             color: status == createTaskBloc.lastPrioritySelection

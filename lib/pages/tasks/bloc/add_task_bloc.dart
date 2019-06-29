@@ -26,6 +26,11 @@ class AddTaskBloc implements BlocBase {
     updateDueDate(DateTime.now().millisecondsSinceEpoch);
     _projectSelection.add(Project.getInbox());
     _prioritySelected.add(lastPrioritySelection);
+    print('_@_@_@_@_@_@_@_@_@_@_prioritySelected:');
+    print(lastPrioritySelection);
+    print(_prioritySelected);
+    print('_@_@_@_@_@_@_@_@_@_@_prioritySelected:');
+
   }
 
   BehaviorSubject<List<Project>> _projectController =
@@ -107,6 +112,8 @@ class AddTaskBloc implements BlocBase {
   }
 
   void updatePriority(Status priority) {
+    print('==============================');
+    print(priority);
     _prioritySelected.add(priority);
     lastPrioritySelection = priority;
   }

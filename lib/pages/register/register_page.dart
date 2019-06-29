@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/pages/register/register_bloc.dart';
+import 'package:flutter_todo_list/utils/upload_avatar.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 
 ///注册页面UI
@@ -32,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 buildTitle(),
                 buildTitleLine(),
                 SizedBox(height: 20.0),
-                avatarRowContainer(),
+                UploadAvatar(),
                 SizedBox(height: 40.0),
                 buildEmailTextField(),
                 SizedBox(height: 30.0),
@@ -50,6 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 // buildOtherLoginText(),
                 // buildOtherMethod(context),
                 buildRegisterText(context),
+                SizedBox(height: 30.0),
 
               ],
             )));
@@ -63,10 +65,10 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('没有账号？'),
+            Text('不想注册？'),
             GestureDetector(
               child: Text(
-                '点击注册',
+                '有缘下次再见',
                 style: TextStyle(color: Colors.green),
               ),
               onTap: () {
@@ -216,24 +218,25 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Row avatarRowContainer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          width: 120.0,
-          height: 120.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                    "assets/avatar/man.png")),
-          ),)
-      ],
+//  Row avatarRowContainer() {
+//    return Row(
+//      mainAxisAlignment: MainAxisAlignment.center,
+//      children: <Widget>[
+//        Container(
+//          width: 120.0,
+//          height: 120.0,
+//          decoration: BoxDecoration(
+//            shape: BoxShape.circle,
+//            image: DecorationImage(
+//                fit: BoxFit.cover,
+//                image: AssetImage(
+//                    "assets/avatar/man.png")),
+//          ),)
+//      ],
+//
+//    );
+//  }
 
-    );
-  }
 
   Padding buildTitleLine() {
     return Padding(

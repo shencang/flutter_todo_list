@@ -33,3 +33,9 @@ class RegisterUIRouter{
   }
 
 }
+
+class Login{
+    static void loginEmail(){
+
+    }
+}
