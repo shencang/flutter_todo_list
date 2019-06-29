@@ -22,6 +22,7 @@ class TaskDB {
 
   Future<List<Tasks>> getTasks(
       {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) async {
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~>getTasks()");
     var db = await _appDatabase.getDb();
     var whereClause = startDate > 0 && endDate > 0
         ? "WHERE ${Tasks.tblTask}.${Tasks.dbDueDate} BETWEEN $startDate AND $endDate"
@@ -40,11 +41,13 @@ class TaskDB {
         'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
         'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
         'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} $whereClause GROUP BY ${Tasks.tblTask}.${Tasks.dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
-
+    print('?????????????????????????????');
+    print(result);
     return _bindData(result);
   }
 
   List<Tasks> _bindData(List<Map<String, dynamic>> result) {
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~>_bindData");
     List<Tasks> tasks = List();
     for (Map<String, dynamic> item in result) {
       var myTask = Tasks.fromMap(item);
@@ -61,6 +64,7 @@ class TaskDB {
 
   Future<List<Tasks>> getTasksByProject(int projectId,
       {TaskStatus status}) async {
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~>getTasksByProject");
     var db = await _appDatabase.getDb();
     String whereStatus = status != null
         ? "AND ${Tasks.tblTask}.${Tasks.dbStatus}=${status.index}"
@@ -70,12 +74,14 @@ class TaskDB {
         'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
         'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
         'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} WHERE ${Tasks.tblTask}.${Tasks.dbProjectID}=$projectId $whereStatus GROUP BY ${Tasks.tblTask}.${Tasks.dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
-
+    print('?????????????????????????????');
+    print(result);
     return _bindData(result);
   }
 
   Future<List<Tasks>> getTasksByLabel(String labelName,
       {TaskStatus status}) async {
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~>getTasksByLabel");
     var db = await _appDatabase.getDb();
     String whereStatus = status != null
         ? "AND ${Tasks.tblTask}.${Tasks.dbStatus}=${TaskStatus.PENDING.index}"
@@ -84,11 +90,13 @@ class TaskDB {
         'SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project.dbName},${Project.tblProject}.${Project.dbColorCode},group_concat(${Label.tblLabel}.${Label.dbName}) as labelNames FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
         'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
         'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} WHERE ${Tasks.tblTask}.${Tasks.dbProjectID}=${Project.tblProject}.${Project.dbId} $whereStatus GROUP BY ${Tasks.tblTask}.${Tasks.dbId} having labelNames LIKE "%$labelName%" ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
-
+    print('?????????????????????????????');
+    print(result);
     return _bindData(result);
   }
 
   Future deleteTask(int taskID) async {
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~>deleteTask");
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(
@@ -97,6 +105,7 @@ class TaskDB {
   }
 
   Future updateTaskStatus(int taskID, TaskStatus status) async {
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~>updateTaskStatus");
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawQuery(
@@ -106,6 +115,7 @@ class TaskDB {
 
   /// Inserts or replaces the task.
   Future updateTask(Tasks task, {List<int> labelIDs}) async {
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~>updateTask");
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       int id = await txn.rawInsert('INSERT OR REPLACE INTO '

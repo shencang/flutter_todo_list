@@ -12,15 +12,15 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreen extends State<UserScreen> {
   Image userHeadBlur = new Image.asset(
-    "assets/profile_pics.jpg",
+    "assets/avatar/wo.png",
     width: MediaQueryData.fromWindow(window).size.width,
     height: 300,
     fit: BoxFit.fitHeight,
   );
-  Image userHead = new Image.asset("assets/profile_pics.jpg");
+  Image userHead = new Image.asset("assets/avatar/wo.png");
 
   getUserHead() {
-    return "assets/profile_pics.jpg";
+    return "assets/avatar/wo.png";
   }
 
   @override
@@ -59,7 +59,7 @@ class _UserScreen extends State<UserScreen> {
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: AssetImage(
-                                            "assets/profile_pics.jpg")),
+                                            "assets/avatar/wo.png")),
                                   ),
                                 ),
                                 Padding(

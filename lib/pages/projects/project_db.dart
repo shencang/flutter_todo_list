@@ -18,6 +18,7 @@ class ProjectDB {
   }
 
   Future<List<Project>> getProjects({bool isInboxVisible = true}) async {
+    print("======================>getProjects");
     var db = await _appDatabase.getDb();
     var whereClause = isInboxVisible ? ";" : " WHERE ${Project.dbId}!=1;";
     var result =
@@ -31,6 +32,7 @@ class ProjectDB {
   }
 
   Future insertOrReplace(Project project) async {
+    print("======================>insertOrReplace");
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawInsert('INSERT OR REPLACE INTO '
@@ -40,6 +42,7 @@ class ProjectDB {
   }
 
   Future deleteProject(int projectID) async {
+    print('======================>deleteProject');
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawDelete(

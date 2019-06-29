@@ -1,40 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/pages/register/register_bloc.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
-import 'package:flutter_todo_list/pages/register/register_page.dart';
 
-import 'login_bloc.dart';
-
-///登录页面UI
-class LoginPage extends StatefulWidget {
+///注册页面UI
+class RegisterPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  String _email, _password;
+  String _email, _password,_name;
+  FileImage _avatar;
   bool _isObscure = true;
   Color _eyeColor;
-  List _loginMethod = [
-    {
-      "title": "facebook",
-      "icon": GroovinMaterialIcons.facebook,
-    },
-    {
-      "title": "google",
-      "icon": GroovinMaterialIcons.google,
-    },
-    {
-      "title": "twitter",
-      "icon": GroovinMaterialIcons.twitter,
 
-    },
+  var _genderSelect;
 
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
         body: Form(
             key: _formKey,
             child: ListView(
@@ -45,21 +31,28 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 buildTitle(),
                 buildTitleLine(),
-                SizedBox(height: 70.0),
+                SizedBox(height: 20.0),
+                avatarRowContainer(),
+                SizedBox(height: 40.0),
                 buildEmailTextField(),
                 SizedBox(height: 30.0),
                 buildPasswordTextField(context),
-                buildForgetPasswordText(context),
+                SizedBox(height: 30.0),
+                buildPasswordReTrueTextField(context),
+                SizedBox(height: 30.0),
+                buildNameTextField(),
+                SizedBox(height: 30.0),
+                selectSex(),
+                // buildForgetPasswordText(context),
                 SizedBox(height: 60.0),
                 buildLoginButton(context),
                 SizedBox(height: 30.0),
-                buildOtherLoginText(),
-                buildOtherMethod(context),
+                // buildOtherLoginText(),
+                // buildOtherMethod(context),
                 buildRegisterText(context),
+
               ],
-            ),
-        ),
-    );
+            )));
   }
 
   Align buildRegisterText(BuildContext context) {
@@ -79,12 +72,7 @@ class _LoginPageState extends State<LoginPage> {
               onTap: () {
                 //TODO 跳转到注册页面
                 print('去注册');
-                RegisterUIRouter.pushRefreshDetail(context);
-
-//                Navigator.of(context).push(new MaterialPageRoute(builder: (_){
-//                   return new RegisterPage();
-//                }));
-                //Navigator.pop(context);
+                Navigator.pop(context);
               },
             ),
           ],
@@ -93,38 +81,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  ButtonBar buildOtherMethod(BuildContext context) {
-    return ButtonBar(
-      alignment: MainAxisAlignment.center,
-      children: _loginMethod
-          .map((item) => Builder(
-        builder: (context) {
-          return IconButton(
-              icon: Icon(item['icon'],
-                  color: Theme.of(context).iconTheme.color),
-              onPressed: () {
-                //TODO : 第三方登录方法
-                Scaffold.of(context).showSnackBar(new SnackBar(
-                  content: new Text("${item['title']}登录"),
-                  action: new SnackBarAction(
-                    label: "取消",
-                    onPressed: () {},
-                  ),
-                ));
-              });
-        },
-      ))
-          .toList(),
-    );
-  }
 
-  Align buildOtherLoginText() {
-    return Align(
-        alignment: Alignment.center,
-        child: Text(
-          '其他账号登录',
-          style: TextStyle(color: Colors.grey, fontSize: 14.0),
-        ));
+  GenderSelection selectSex(){
+    return GenderSelection(
+      selectCallback: (genderSelect){
+        _genderSelect = genderSelect;
+        setState(() {});
+      },
+    );
   }
 
   Align buildLoginButton(BuildContext context) {
@@ -134,15 +98,18 @@ class _LoginPageState extends State<LoginPage> {
         width: 270.0,
         child: RaisedButton(
           child: Text(
-            '登录',
-            style: Theme.of(context).primaryTextTheme.headline,
+            '注册',
+            style: Theme
+                .of(context)
+                .primaryTextTheme
+                .headline,
           ),
           color: Colors.black,
           onPressed: () {
             if (_formKey.currentState.validate()) {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
-              //TODO 执行登录方法
+              //TODO 执行注册方法
               print('email:$_email , assword:$_password');
             }
           },
@@ -152,23 +119,25 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Padding buildForgetPasswordText(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: FlatButton(
-          child: Text(
-            '忘记密码？',
-            style: TextStyle(fontSize: 14.0, color: Colors.grey),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+
+
+  TextFormField buildNameTextField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: '昵称',
       ),
+      validator: (String value) {
+        if (value.length<100) {
+          return '请输入正确的昵称长度';
+        }
+        if (value.isEmpty) {
+          return '请输入正确的昵称长度';
+        }
+      },
+      onSaved: (String value) => _name = value,
     );
   }
+
 
   TextFormField buildPasswordTextField(BuildContext context) {
     return TextFormField(
@@ -191,11 +160,45 @@ class _LoginPageState extends State<LoginPage> {
                   _isObscure = !_isObscure;
                   _eyeColor = _isObscure
                       ? Colors.grey
-                      : Theme.of(context).iconTheme.color;
+                      : Theme
+                      .of(context)
+                      .iconTheme
+                      .color;
                 });
               })),
     );
   }
+
+  TextFormField buildPasswordReTrueTextField(BuildContext context) {
+    return TextFormField(
+      onSaved: (String value) => _password = value,
+      obscureText: _isObscure,
+      validator: (String value) {
+        if (value.isEmpty) {
+          return '请再次输入密码';
+        }
+      },
+      decoration: InputDecoration(
+          labelText: '重复密码',
+          suffixIcon: IconButton(
+              icon: Icon(
+                Icons.remove_red_eye,
+                color: _eyeColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isObscure = !_isObscure;
+                  _eyeColor = _isObscure
+                      ? Colors.grey
+                      : Theme
+                      .of(context)
+                      .iconTheme
+                      .color;
+                });
+              })),
+    );
+  }
+
 
   TextFormField buildEmailTextField() {
     return TextFormField(
@@ -210,6 +213,25 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       onSaved: (String value) => _email = value,
+    );
+  }
+
+  Row avatarRowContainer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: 120.0,
+          height: 120.0,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                    "assets/avatar/man.png")),
+          ),)
+      ],
+
     );
   }
 
@@ -231,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Text(
-        '立刻知行合一',
+        '欢迎使用',
         style: TextStyle(fontSize: 42.0),
       ),
     );

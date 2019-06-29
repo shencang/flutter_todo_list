@@ -17,6 +17,7 @@ class LabelDB {
   }
 
   Future<bool> isLabelExits(Label label) async {
+    print('------------------->isLabelExits');
     var db = await _appDatabase.getDb();
     var result = await db.rawQuery(
         "SELECT * FROM ${Label.tblLabel} WHERE ${Label.dbName} LIKE '${label.name}'");
@@ -30,6 +31,7 @@ class LabelDB {
   }
 
   Future updateLabels(Label label) async {
+    print("-------------------->updateLabels");
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
       await txn.rawInsert('INSERT OR REPLACE INTO '
@@ -39,6 +41,7 @@ class LabelDB {
   }
 
   Future<List<Label>> getLabels() async {
+    print("-------------------->getLabels()");
     var db = await _appDatabase.getDb();
     var result = await db.rawQuery('SELECT * FROM ${Label.tblLabel}');
     List<Label> projects = List();

@@ -30,6 +30,8 @@ dependencies:
   rxdart: ^0.19.0
   http: ^0.12.0+1
   image: ^2.1.4
+  dio: ^2.1.7
+  json_annotation: ^2.4.0
 
   groovin_material_icons: ^1.1.5
   mysql1: ^0.17.0
@@ -37,6 +39,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  build_runner: ^1.6.0
+  json_serializable: ^3.0.0
 
 
 # For information on the generic Dart part of this file, see the
@@ -62,6 +67,12 @@ flutter:
     - assets/bg.jpeg
     - assets/welcome.png
     - assets/android_lab.jpg
+    - assets/avatar/man.png
+    - assets/avatar/wo.png
+    - assets/choose/sex/man_sele.png
+    - assets/choose/sex/man_seled.png
+    - assets/choose/sex/wo_sele.png
+    - assets/choose/sex/wo_seled.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
