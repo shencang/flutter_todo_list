@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_todo_list/myHttp/api.dart';
+import 'package:flutter_todo_list/myHttp/fun.dart';
 import 'package:flutter_todo_list/pages/register/register_page.dart';
 
 class RegisterUIRouter{
@@ -35,7 +40,32 @@ class RegisterUIRouter{
 }
 
 class Login{
-    static void loginEmail(){
+     Future<bool> loginEmail(String email , String password) async {
+      Map<String, dynamic> login = {'userEmail':email,'password':password};
+      //Map<String, dynamic> user = {'userEmail':email,'password':password};
+      Fun fun = new Fun();
+      Map getMessage;
+      String result;
+      getMessage =await fun.messagePost(Api.LoginEmail, login);
+     // fun.get();
+      result  = getMessage['id'];
+      print(getMessage);
+      print(result);
+      if (result =='1'){
+        return  true;
+      }
+      else{
+        return  false;
+      }
+
 
     }
+     Future<Response> loginEmailR(String email , String password) async {
+       Map<String, dynamic> login = {'userEmail':email,'password':password};
+       //Map<String, dynamic> user = {'userEmail':email,'password':password};
+       Fun fun = new Fun();
+
+       return await fun.messagePostR(Api.LoginEmail, login);
+
+     }
 }

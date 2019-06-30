@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/myHttp/api.dart';
+import 'package:flutter_todo_list/myHttp/fun.dart';
 
 /// 自定义的性别选择组件。
 class GenderSelection extends StatefulWidget {
@@ -93,4 +98,19 @@ class _GenderSelectionState extends State<GenderSelection> {
       ],
     );
   }
+}
+
+class Register{
+
+  Future<Response> registerR(String email , String password,String sex ,
+      String name, File avatar) async {
+    //TODO 注册的网络方法
+//    Map<String, dynamic> login = {'userEmail':email,'password':password};
+//    //Map<String, dynamic> user = {'userEmail':email,'password':password};
+//    Fun fun = new Fun();
+//
+//    return await fun.messagePostR(Api.LoginEmail, login);
+
+  }
+
 }

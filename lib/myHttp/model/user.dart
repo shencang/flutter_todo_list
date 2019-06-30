@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'package:flutter_todo_list/http/model/user.g.dart';
+part 'user.g.dart';
 
 
 @JsonSerializable()

@@ -19,6 +19,7 @@ import 'package:flutter_todo_list/pages/settings/settings_page.dart';
 
 ///侧滑栏的UI
 class SideDrawer extends StatelessWidget {
+  static bool loginStatus =false;
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);

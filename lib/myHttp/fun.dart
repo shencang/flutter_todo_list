@@ -8,52 +8,41 @@ class Fun {
     dio = new Dio();
   }
 
- Future post(String apiString, Map<String, dynamic> postData) async {
+ Future userPost(String apiString, Map<String, dynamic> postData) async {
+    print(postData);
     FormData formData = new FormData.from(postData);
     Response<Map> response;
     response = await dio.post(Api.BaseUrl+apiString,data: formData);
-    user users = user.fromJson(response.data);
-
+    user userA = user.fromJson(response.data);
+    return userA;
   }
+    Future messagePost(String apiString, Map<String, dynamic> postData) async {
+      print(postData);
+      FormData formData = new FormData.from(postData);
+      Response<Map> response;
+      response = await dio.post(Api.BaseUrl+apiString,data: formData);
+      return response.data;
+    }
+    Future get() async {
+      Response response;
+      response = await dio.get(Api.BaseUrl + "user/");
+      print(response.data.toString());
+    }
+
+    Future messagePostR(String apiString, Map<String, dynamic> postData) async {
+      print(postData);
+      FormData formData = new FormData.from(postData);
+      Response<Map> response;
+      response = await dio.post(Api.BaseUrl+apiString,data: formData);
+      return response;
+    }
+    Future userPostR(String apiString, Map<String, dynamic> postData) async {
+      print(postData);
+      FormData formData = new FormData.from(postData);
+      Response<Map> response;
+      response = await dio.post(Api.BaseUrl+apiString,data: formData);
+      return response;
+    }
 }
 
 
-//import 'package:dio/dio.dart';
-//import 'package:flutter_http_study/model/User.dart';
-//
-//class NetTools {
-//  Dio dio;
-//  static const String BaseUrl = "http://shencangblue.com/";
-//
-//  NetTools() {
-//    dio = new Dio();
-//  }
-//
-//  Future getHttp() async {
-//    try {
-//      Response response = await Dio().get(BaseUrl);
-//      print("==========================>");
-//      print(response);
-//      return response.data.toString();
-//    } catch (e) {
-//      print("==========================>");
-//      print(e);
-//    }
-//  }
-//
-//  get() async {
-//    Response response;
-//    response = await dio.get(BaseUrl + "user/");
-//    print(response.data.toString());
-//  }
-//
-//  post() async {
-//    FormData formData =
-//    new FormData.from({'userEmail': "2630610009@qq.com",});
-//    Response<Map> response;
-//    response = await dio.post(BaseUrl+"getUserInfo/", data: formData);
-//    User user = User.fromJson(response.data);
-//    print(response.data.toString());
-//    print(user.userAvatar);
-//  }
-//}

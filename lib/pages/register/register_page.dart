@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/pages/register/register_bloc.dart';
+import 'package:flutter_todo_list/utils/loading.dart';
 import 'package:flutter_todo_list/utils/upload_avatar.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 
@@ -10,10 +14,12 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  Register _register = new Register();
   final _formKey = GlobalKey<FormState>();
   String _email, _password,_name;
-  FileImage _avatar;
+  File _avatar;
   bool _isObscure = true;
+  String _sex = '';
   Color _eyeColor;
 
   var _genderSelect;
@@ -88,6 +94,13 @@ class _RegisterPageState extends State<RegisterPage> {
     return GenderSelection(
       selectCallback: (genderSelect){
         _genderSelect = genderSelect;
+        print(_genderSelect);
+        if(_genderSelect=='1'){
+          _sex = '男';
+        }
+        else{
+          _sex = '女';
+        }
         setState(() {});
       },
     );
@@ -112,7 +125,51 @@ class _RegisterPageState extends State<RegisterPage> {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
               //TODO 执行注册方法
-              print('email:$_email , assword:$_password');
+              print('email:$_email , password:$_password , name = $_name , sex = $_sex');
+              print('avatar = ');
+              print(_avatar.uri);
+
+              showDialog<Null>(
+                context: context,
+                builder: (BuildContext context) {
+                  return new SimpleDialog(
+                    title: new Text('正在登录'),
+                    children: <Widget>[
+                      FutureBuilder(
+                          future: _register.registerR(_email, _password,_sex,_name,_avatar),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Response> snapshot) {
+                            /*表示数据成功返回*/
+                            if (snapshot.hasData) {
+                              Response response = snapshot.data;
+                              print(response.toString());
+                              if (response.data['id']=='1'){
+                                //loginStatus = true;
+                                return Text("${response.data['message']}"
+                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+
+                              }
+                              else{
+                               // loginStatus = false;
+                                return Text("${response.data['message']}"
+                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                              }
+
+                            } else {
+                              return LoadingWidget();
+                            }
+                          })
+                    ],
+                  );
+
+                },
+              ).then((val) {
+                print(val);
+//                if(loginStatus){
+//                  Navigator.pop(context);
+//                }
+              });
+
             }
           },
           shape: StadiumBorder(side: BorderSide()),

@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/utils/loading.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:flutter_todo_list/pages/register/register_page.dart';
 
@@ -11,6 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static bool loginStatus = false;
+  Login _login = new Login();
   final _formKey = GlobalKey<FormState>();
   String _email, _password;
   bool _isObscure = true;
@@ -27,38 +31,36 @@ class _LoginPageState extends State<LoginPage> {
     {
       "title": "twitter",
       "icon": GroovinMaterialIcons.twitter,
-
     },
-
   ];
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: Form(
-            key: _formKey,
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 22.0),
-              children: <Widget>[
-                SizedBox(
-                  height: kToolbarHeight,
-                ),
-                buildTitle(),
-                buildTitleLine(),
-                SizedBox(height: 70.0),
-                buildEmailTextField(),
-                SizedBox(height: 30.0),
-                buildPasswordTextField(context),
-                buildForgetPasswordText(context),
-                SizedBox(height: 60.0),
-                buildLoginButton(context),
-                SizedBox(height: 30.0),
-                buildOtherLoginText(),
-                buildOtherMethod(context),
-                buildRegisterText(context),
-              ],
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 22.0),
+          children: <Widget>[
+            SizedBox(
+              height: kToolbarHeight,
             ),
+            buildTitle(),
+            buildTitleLine(),
+            SizedBox(height: 70.0),
+            buildEmailTextField(),
+            SizedBox(height: 30.0),
+            buildPasswordTextField(context),
+            buildForgetPasswordText(context),
+            SizedBox(height: 60.0),
+            buildLoginButton(context),
+            SizedBox(height: 30.0),
+            buildOtherLoginText(),
+            buildOtherMethod(context),
+            buildRegisterText(context),
+          ],
         ),
+      ),
     );
   }
 
@@ -98,22 +100,22 @@ class _LoginPageState extends State<LoginPage> {
       alignment: MainAxisAlignment.center,
       children: _loginMethod
           .map((item) => Builder(
-        builder: (context) {
-          return IconButton(
-              icon: Icon(item['icon'],
-                  color: Theme.of(context).iconTheme.color),
-              onPressed: () {
-                //TODO : 第三方登录方法
-                Scaffold.of(context).showSnackBar(new SnackBar(
-                  content: new Text("${item['title']}登录"),
-                  action: new SnackBarAction(
-                    label: "取消",
-                    onPressed: () {},
-                  ),
-                ));
-              });
-        },
-      ))
+                builder: (context) {
+                  return IconButton(
+                      icon: Icon(item['icon'],
+                          color: Theme.of(context).iconTheme.color),
+                      onPressed: () {
+                        //TODO : 第三方登录方法
+                        Scaffold.of(context).showSnackBar(new SnackBar(
+                          content: new Text("${item['title']}登录"),
+                          action: new SnackBarAction(
+                            label: "取消",
+                            onPressed: () {},
+                          ),
+                        ));
+                      });
+                },
+              ))
           .toList(),
     );
   }
@@ -138,12 +140,56 @@ class _LoginPageState extends State<LoginPage> {
             style: Theme.of(context).primaryTextTheme.headline,
           ),
           color: Colors.black,
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState.validate()) {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
               //TODO 执行登录方法
               print('email:$_email , assword:$_password');
+              //getLoginStatus();
+              showDialog<Null>(
+                context: context,
+                builder: (BuildContext context) {
+                  return new SimpleDialog(
+                    title: new Text('正在登录'),
+                    children: <Widget>[
+                      FutureBuilder(
+                          future: _login.loginEmailR(_email, _password),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Response> snapshot) {
+                            /*表示数据成功返回*/
+                            if (snapshot.hasData) {
+                              Response response = snapshot.data;
+                              print(response.toString());
+                              if (response.data['id']=='1'){
+                                loginStatus = true;
+                                return Text("${response.data['message']}"
+                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+
+                              }
+                              else{
+                                loginStatus = false;
+                                return Text("${response.data['message']}"
+                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                              }
+
+                            } else {
+                              return LoadingWidget();
+                            }
+                          })
+                    ],
+                  );
+
+                },
+              ).then((val) {
+                print(val);
+                if(loginStatus){
+                  Navigator.pop(context);
+                }
+              });
+
+
+
             }
           },
           shape: StadiumBorder(side: BorderSide()),

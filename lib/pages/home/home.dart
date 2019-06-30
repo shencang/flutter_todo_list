@@ -13,15 +13,15 @@ import 'package:flutter_todo_list/pages/tasks/task_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 ///主页的UI
 class HomePage extends StatelessWidget {
   final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
 
   @override
   Widget build(BuildContext context) {
+    bool permissionIsTrue;
     final HomeBloc homeBloc = BlocProvider.of(context);
-    requestPermission();
+    requestPermission(permissionIsTrue);
     homeBloc.filter.listen((filter) {
       _taskBloc.updateFilters(filter);
     });
@@ -77,41 +77,40 @@ class HomePage extends StatelessWidget {
             break;
         }
       },
-      itemBuilder: (BuildContext context) =>
-      <PopupMenuEntry<MenuItem>>[
-        const PopupMenuItem<MenuItem>(
-          value: MenuItem.taskCompleted,
-          child: const Text('完成的任务'),
-        )
-      ],
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
+            const PopupMenuItem<MenuItem>(
+              value: MenuItem.taskCompleted,
+              child: const Text('完成的任务'),
+            )
+          ],
     );
   }
 }
-  Future requestPermission() async {
 
-    // 申请权限
+Future requestPermission(bool permissionIsTrue) async {
+  // 申请权限
 
-    Map<PermissionGroup, PermissionStatus> permissions =
+  Map<PermissionGroup, PermissionStatus> permissions =
+      await PermissionHandler().requestPermissions([
+    PermissionGroup.storage,
+    PermissionGroup.phone,
+  ]);
 
-    await PermissionHandler().requestPermissions([PermissionGroup.storage
-      ,PermissionGroup.phone,]);
+  // 申请结果
 
-    // 申请结果
+  PermissionStatus permission =
+      await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
 
-    PermissionStatus permission =
-
-    await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
-
-    if (permission == PermissionStatus.granted) {
-
-      Fluttertoast.showToast(msg: "权限申请通过");
-
-    } else {
-
-      Fluttertoast.showToast(msg: "权限申请被拒绝");
-
-    }
-
+  if (permission == PermissionStatus.granted) {
+    permissionIsTrue =true;
+     if(!permissionIsTrue){
+       Fluttertoast.showToast(msg: "权限申请通过");
+     }
+  } else {
+    Fluttertoast.showToast(msg: "权限申请被拒绝");
+    permissionIsTrue=false;
   }
+}
+
 // This is the type used by the popup menu below.
 enum MenuItem { taskCompleted }
