@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/pages/register/status_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -24,6 +25,8 @@ class _UploadAvatarState extends State<UploadAvatar> {
     setState(() {
       // 更新用作头像的照片。
       _image = image;
+      StatusImage.regImage =image;
+
     });
   }
 

@@ -29,8 +29,7 @@ class _GenderSelectionState extends State<GenderSelection> {
       // 主轴对齐（`mainAxisAlignment`）属性，如何将子组件放在主轴上。
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        // TODO: 第3步：实现“选择性别男”
-        // TODO: 第3步：实现“选择性别男”
+
         GestureDetector(
           onTap: () {
             // 选择男人时返回1并更新组件。
@@ -62,8 +61,6 @@ class _GenderSelectionState extends State<GenderSelection> {
           ),
         ),
 
-        // TODO: 第4步：实现“选择性别女”
-        // TODO: 第4步：实现“选择性别女”
         SizedBox(width: 36.0),
         GestureDetector(
           onTap: () {
@@ -103,14 +100,41 @@ class _GenderSelectionState extends State<GenderSelection> {
 class Register{
 
   Future<Response> registerR(String email , String password,String sex ,
-      String name, File avatar) async {
-    //TODO 注册的网络方法
-//    Map<String, dynamic> login = {'userEmail':email,'password':password};
-//    //Map<String, dynamic> user = {'userEmail':email,'password':password};
-//    Fun fun = new Fun();
-//
-//    return await fun.messagePostR(Api.LoginEmail, login);
+      String username, File avatar) async {
+    String imagePath = avatar.path;
+    var name = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.length);
+    var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
+    print(imagePath);
+    print(name);
+    print(suffix);
+    Map<String, dynamic> register = {'userEmail':email,'userPassword':password,
+      'username':username,'userSex':sex,'userAvatar':new UploadFileInfo(new File(imagePath), name,
+      contentType: ContentType.parse('media/$suffix')),'userPhone':'','userIdentity':'0','userSignature':''};
+    //Map<String, dynamic> user = {'userEmail':email,'password':password};
+    Fun fun = new Fun();
 
+    return await fun.messagePostR(Api.Register, register);
+//    userEmail:33@qq.com
+//    userPassword:12345
+//    username:aaa
+//    userPhone:
+//    userIdentity:
+//    userSex:
+//    userSignature:
+  }
+
+  Future<Response> findEmailRepeatR(String email) async {
+    Map<String, dynamic> emails = {'userEmail':email};
+    //Map<String, dynamic> user = {'userEmail':email,'password':password};
+    Fun fun = new Fun();
+    return await fun.messagePostR(Api.FindEmailRepeat, emails);
+//    userEmail:33@qq.com
+//    userPassword:12345
+//    username:aaa
+//    userPhone:
+//    userIdentity:
+//    userSex:
+//    userSignature:
   }
 
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/pages/register/register_bloc.dart';
+import 'package:flutter_todo_list/pages/register/status_image.dart';
 import 'package:flutter_todo_list/utils/loading.dart';
 import 'package:flutter_todo_list/utils/upload_avatar.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
@@ -17,10 +18,11 @@ class _RegisterPageState extends State<RegisterPage> {
   Register _register = new Register();
   final _formKey = GlobalKey<FormState>();
   String _email, _password,_name;
-  File _avatar;
+  String _password_temp;
   bool _isObscure = true;
   String _sex = '';
   Color _eyeColor;
+  bool _emailReeat =false;
 
   var _genderSelect;
 
@@ -127,47 +129,78 @@ class _RegisterPageState extends State<RegisterPage> {
               //TODO 执行注册方法
               print('email:$_email , password:$_password , name = $_name , sex = $_sex');
               print('avatar = ');
-              print(_avatar.uri);
+              print(StatusImage.regImage.path);
 
               showDialog<Null>(
                 context: context,
                 builder: (BuildContext context) {
                   return new SimpleDialog(
-                    title: new Text('正在登录'),
+                    title: new Text('注册'),
                     children: <Widget>[
-                      FutureBuilder(
-                          future: _register.registerR(_email, _password,_sex,_name,_avatar),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<Response> snapshot) {
-                            /*表示数据成功返回*/
-                            if (snapshot.hasData) {
-                              Response response = snapshot.data;
-                              print(response.toString());
-                              if (response.data['id']=='1'){
-                                //loginStatus = true;
-                                return Text("${response.data['message']}"
-                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                  FutureBuilder(
+                  future: _register.findEmailRepeatR(_email),
+                  builder: (BuildContext context,
+                  AsyncSnapshot<Response> snapshot) {
+                  /*表示数据成功返回*/
+                  if (snapshot.hasData) {
+                  Response response = snapshot.data;
+                  print(response.toString());
+                  if (response.data['id']=='0'){
+                  _emailReeat = true;
+                  return Text("${response.data['message']}"
+                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                  }
+                  else{
+                  _emailReeat = false;
+                  return Text("${response.data['message']}"
+                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                  }
 
-                              }
-                              else{
-                               // loginStatus = false;
-                                return Text("${response.data['message']}"
-                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
-                              }
-
-                            } else {
-                              return LoadingWidget();
-                            }
-                          })
+                  } else if(snapshot.hasError){
+                  return Text("发生错误");
+                  }
+                  else {
+                  return LoadingWidget();
+                  }
+                  }),
                     ],
                   );
 
                 },
               ).then((val) {
                 print(val);
-//                if(loginStatus){
-//                  Navigator.pop(context);
-//                }
+                if(_emailReeat){
+                  //TODO 还无法启动这个部分
+                  FutureBuilder(
+                      future: _register.registerR(_email, _password,_sex,_name,StatusImage.regImage),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Response> snapshot) {
+                        /*表示数据成功返回*/
+                        if (snapshot.hasData) {
+                          Response response = snapshot.data;
+                          print(response.toString());
+                          if (response.data['id']=='1'){
+                            //loginStatus = true;
+                            return Text("${response.data['message']}"
+                              ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+
+                          }
+                          else{
+                            // loginStatus = false;
+                            return Text("${response.data['message']}"
+                              ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                          }
+
+                        } else if(snapshot.hasError){
+                          return Text("发生错误");
+                        }
+                        else {
+                          return LoadingWidget();
+                        }
+                      });
+                }else{
+
+                }
               });
 
             }
@@ -186,11 +219,11 @@ class _RegisterPageState extends State<RegisterPage> {
         labelText: '昵称',
       ),
       validator: (String value) {
-        if (value.length<100) {
-          return '请输入正确的昵称长度';
+        if (value.length>100) {
+          return '昵称太长啦';
         }
         if (value.isEmpty) {
-          return '请输入正确的昵称长度';
+          return '昵称不能为空';
         }
       },
       onSaved: (String value) => _name = value,
@@ -205,6 +238,9 @@ class _RegisterPageState extends State<RegisterPage> {
       validator: (String value) {
         if (value.isEmpty) {
           return '请输入密码';
+        }
+        else{
+          _password_temp =value;
         }
       },
       decoration: InputDecoration(
@@ -230,10 +266,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   TextFormField buildPasswordReTrueTextField(BuildContext context) {
     return TextFormField(
-      onSaved: (String value) => _password = value,
+      //onSaved: (String value) => _password = value,
       obscureText: _isObscure,
       validator: (String value) {
-        if (value.isEmpty) {
+        if (value != _password_temp) {
           return '请再次输入密码';
         }
       },
