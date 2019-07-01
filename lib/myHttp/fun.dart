@@ -14,6 +14,7 @@ class Fun {
     Response<Map> response;
     response = await dio.post(Api.BaseUrl+apiString,data: formData);
     user userA = user.fromJson(response.data);
+    print(userA.userId);
     return userA;
   }
     Future messagePost(String apiString, Map<String, dynamic> postData) async {

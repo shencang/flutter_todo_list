@@ -114,13 +114,7 @@ class Register{
     Fun fun = new Fun();
 
     return await fun.messagePostR(Api.Register, register);
-//    userEmail:33@qq.com
-//    userPassword:12345
-//    username:aaa
-//    userPhone:
-//    userIdentity:
-//    userSex:
-//    userSignature:
+
   }
 
   Future<Response> findEmailRepeatR(String email) async {
@@ -128,13 +122,7 @@ class Register{
     //Map<String, dynamic> user = {'userEmail':email,'password':password};
     Fun fun = new Fun();
     return await fun.messagePostR(Api.FindEmailRepeat, emails);
-//    userEmail:33@qq.com
-//    userPassword:12345
-//    username:aaa
-//    userPhone:
-//    userIdentity:
-//    userSex:
-//    userSignature:
+
   }
 
 }

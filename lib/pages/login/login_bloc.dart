@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_todo_list/myHttp/api.dart';
 import 'package:flutter_todo_list/myHttp/fun.dart';
+import 'package:flutter_todo_list/myHttp/model/user.dart';
 import 'package:flutter_todo_list/pages/register/register_page.dart';
 
 class RegisterUIRouter{
@@ -67,5 +68,12 @@ class Login{
 
        return await fun.messagePostR(Api.LoginEmail, login);
 
+     }
+
+     Future<Response> findUserInfoR(String email) async {
+       Map<String, dynamic> emails = {'userEmail':email};
+       //Map<String, dynamic> user = {'userEmail':email,'password':password};
+       Fun fun = new Fun();
+       return await fun.userPostR(Api.GetUserInfo, emails);
      }
 }

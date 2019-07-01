@@ -1,6 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/myHttp/api.dart';
+import 'package:flutter_todo_list/myHttp/model/user.dart';
+import 'package:flutter_todo_list/myHttp/model_state_info.dart';
+import 'package:flutter_todo_list/pages/login/login_page.dart';
 import 'package:flutter_todo_list/utils/app_constant.dart';
 import 'package:flutter_todo_list/utils/app_util.dart';
 
@@ -11,17 +15,16 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreen extends State<UserScreen> {
-  Image userHeadBlur = new Image.asset(
-    "assets/avatar/wo.png",
+  //static user userShow = GetInfo.userShow;
+  Image userHeadBlur = new Image.network(
+    Api.BaseUrl_com + GetInfo.userShow.userAvatar,
     width: MediaQueryData.fromWindow(window).size.width,
     height: 300,
-    fit: BoxFit.fitHeight,
+    fit: BoxFit.fitWidth,
   );
-  Image userHead = new Image.asset("assets/avatar/wo.png");
-
-  getUserHead() {
-    return "assets/avatar/wo.png";
-  }
+  Image userHead = new Image.network(
+    Api.BaseUrl_com + GetInfo.userShow.userAvatar,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -58,20 +61,22 @@ class _UserScreen extends State<UserScreen> {
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: AssetImage(
-                                            "assets/avatar/wo.png")),
+                                        image: NetworkImage(Api.BaseUrl_com +
+                                            GetInfo.userShow.userAvatar)),
                                   ),
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(top: 20),
                                     child: Text(
-                                      "用户名",
+                                      GetInfo.userShow.username,
                                       style: TextStyle(fontSize: 30),
                                     )),
                                 Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: Text(
-                                      "用户的个性签名",
+                                      GetInfo.userShow.userSignature == null
+                                          ? ""
+                                          : GetInfo.userShow.userSignature,
                                       style: TextStyle(fontSize: 20),
                                     ))
                               ],
@@ -90,14 +95,14 @@ class _UserScreen extends State<UserScreen> {
                     children: <Widget>[
                       ListTile(
                         leading: Icon(Icons.email, color: Colors.black),
-                        title: Text("1145534369@qq.com"),
+                        title: Text(GetInfo.userShow.userEmail),
                         subtitle: Text("电子邮箱"),
                         //onTap: () => launchURL(GITHUB_URL),
                       ),
                       ListTile(
                         leading:
                             Icon(Icons.assignment_ind, color: Colors.black),
-                        title: Text("用户名"),
+                        title: Text(GetInfo.userShow.username),
                         subtitle: Text("个人信息"),
                         //onTap: () => launchURL(GITHUB_URL),
                       ),
@@ -125,7 +130,12 @@ class _UserScreen extends State<UserScreen> {
                 textColor: Colors.white,
                 color: Colors.red,
                 child: new Text("退出登录"),
-                onPressed: () {},
+                onPressed: () {
+                  GetInfo.userShow = null;
+                  Navigator.pushReplacement(context,
+                    new MaterialPageRoute(builder: (BuildContext context) {
+                      return new LoginPage();
+                    }));},
               )
             ],
           ),

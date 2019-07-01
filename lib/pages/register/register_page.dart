@@ -15,17 +15,17 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  StatusImage  imageS = new StatusImage();
   Register _register = new Register();
   final _formKey = GlobalKey<FormState>();
-  String _email, _password,_name;
-  String _password_temp;
+  String _email, _password, _name;
+  String _passwordTemp;
   bool _isObscure = true;
   String _sex = '';
   Color _eyeColor;
-  bool _emailReeat =false;
+  bool _emailRepat = false, _isRegister = false;
 
   var _genderSelect;
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 // buildOtherMethod(context),
                 buildRegisterText(context),
                 SizedBox(height: 30.0),
-
               ],
             )));
   }
@@ -91,16 +90,14 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-
-  GenderSelection selectSex(){
+  GenderSelection selectSex() {
     return GenderSelection(
-      selectCallback: (genderSelect){
+      selectCallback: (genderSelect) {
         _genderSelect = genderSelect;
         print(_genderSelect);
-        if(_genderSelect=='1'){
+        if (_genderSelect == '1') {
           _sex = '男';
-        }
-        else{
+        } else {
           _sex = '女';
         }
         setState(() {});
@@ -116,10 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: RaisedButton(
           child: Text(
             '注册',
-            style: Theme
-                .of(context)
-                .primaryTextTheme
-                .headline,
+            style: Theme.of(context).primaryTextTheme.headline,
           ),
           color: Colors.black,
           onPressed: () {
@@ -127,7 +121,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
               //TODO 执行注册方法
-              print('email:$_email , password:$_password , name = $_name , sex = $_sex');
+              print(
+                  'email:$_email , password:$_password , name = $_name , sex = $_sex');
               print('avatar = ');
               print(StatusImage.regImage.path);
 
@@ -137,72 +132,82 @@ class _RegisterPageState extends State<RegisterPage> {
                   return new SimpleDialog(
                     title: new Text('注册'),
                     children: <Widget>[
-                  FutureBuilder(
-                  future: _register.findEmailRepeatR(_email),
-                  builder: (BuildContext context,
-                  AsyncSnapshot<Response> snapshot) {
-                  /*表示数据成功返回*/
-                  if (snapshot.hasData) {
-                  Response response = snapshot.data;
-                  print(response.toString());
-                  if (response.data['id']=='0'){
-                  _emailReeat = true;
-                  return Text("${response.data['message']}"
-                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
-                  }
-                  else{
-                  _emailReeat = false;
-                  return Text("${response.data['message']}"
-                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
-                  }
-
-                  } else if(snapshot.hasError){
-                  return Text("发生错误");
-                  }
-                  else {
-                  return LoadingWidget();
-                  }
-                  }),
+                      FutureBuilder(
+                          future: _register.findEmailRepeatR(_email),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Response> snapshot) {
+                            /*表示数据成功返回*/
+                            if (snapshot.hasData) {
+                              Response response = snapshot.data;
+                              print(response.toString());
+                              if (response.data['id'] == '0') {
+                                _emailRepat = true;
+                                _isRegister = true;
+                                return
+                                    FutureBuilder(
+                                        future: _register.registerR(
+                                            _email,
+                                            _password,
+                                            _sex,
+                                            _name,
+                                            StatusImage.regImage),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<Response> snapshot) {
+                                          /*表示数据成功返回*/
+                                          if (snapshot.hasData) {
+                                            Response response = snapshot.data;
+                                            print(response.toString());
+                                            if (response.data['id'] == '1') {
+                                              return Text(
+                                                "${response.data['message']}",
+                                                style: TextStyle(fontSize: 30),
+                                                textAlign: TextAlign.center,
+                                              );
+                                            } else {
+                                              return Text(
+                                                "${response.data['message']}",
+                                                style: TextStyle(fontSize: 30),
+                                                textAlign: TextAlign.center,
+                                              );
+                                            }
+                                          } else if (snapshot.hasError) {
+                                            return Text("发生错误");
+                                          } else {
+                                            return LoadingWidget();
+                                          }
+                                        }
+                                );
+//                                  Text(
+//                                  "${response.data['message']}",
+//                                  style: TextStyle(fontSize: 30),
+//                                  textAlign: TextAlign.center,
+//                                );
+                              } else {
+                                _isRegister = false;
+                                _emailRepat = false;
+                                return Text(
+                                  "${response.data['message']}",
+                                  style: TextStyle(fontSize: 30),
+                                  textAlign: TextAlign.center,
+                                );
+                              }
+                            } else if (snapshot.hasError) {
+                              return Text("发生错误");
+                            } else {
+                              return LoadingWidget();
+                            }
+                          }),
                     ],
                   );
-
                 },
               ).then((val) {
+                print('=========================!==');
                 print(val);
-                if(_emailReeat){
-                  //TODO 还无法启动这个部分
-                  FutureBuilder(
-                      future: _register.registerR(_email, _password,_sex,_name,StatusImage.regImage),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<Response> snapshot) {
-                        /*表示数据成功返回*/
-                        if (snapshot.hasData) {
-                          Response response = snapshot.data;
-                          print(response.toString());
-                          if (response.data['id']=='1'){
-                            //loginStatus = true;
-                            return Text("${response.data['message']}"
-                              ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
-
-                          }
-                          else{
-                            // loginStatus = false;
-                            return Text("${response.data['message']}"
-                              ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
-                          }
-
-                        } else if(snapshot.hasError){
-                          return Text("发生错误");
-                        }
-                        else {
-                          return LoadingWidget();
-                        }
-                      });
-                }else{
-
+                if (_isRegister) {
+                  print('===!=====================!==');
+                  Navigator.pop(context);
                 }
               });
-
             }
           },
           shape: StadiumBorder(side: BorderSide()),
@@ -211,15 +216,13 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-
-
   TextFormField buildNameTextField() {
     return TextFormField(
       decoration: InputDecoration(
         labelText: '昵称',
       ),
       validator: (String value) {
-        if (value.length>100) {
+        if (value.length > 100) {
           return '昵称太长啦';
         }
         if (value.isEmpty) {
@@ -230,7 +233,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-
   TextFormField buildPasswordTextField(BuildContext context) {
     return TextFormField(
       onSaved: (String value) => _password = value,
@@ -238,9 +240,8 @@ class _RegisterPageState extends State<RegisterPage> {
       validator: (String value) {
         if (value.isEmpty) {
           return '请输入密码';
-        }
-        else{
-          _password_temp =value;
+        } else {
+          _passwordTemp = value;
         }
       },
       decoration: InputDecoration(
@@ -255,10 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   _isObscure = !_isObscure;
                   _eyeColor = _isObscure
                       ? Colors.grey
-                      : Theme
-                      .of(context)
-                      .iconTheme
-                      .color;
+                      : Theme.of(context).iconTheme.color;
                 });
               })),
     );
@@ -269,7 +267,7 @@ class _RegisterPageState extends State<RegisterPage> {
       //onSaved: (String value) => _password = value,
       obscureText: _isObscure,
       validator: (String value) {
-        if (value != _password_temp) {
+        if (value != _passwordTemp) {
           return '请再次输入密码';
         }
       },
@@ -285,15 +283,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   _isObscure = !_isObscure;
                   _eyeColor = _isObscure
                       ? Colors.grey
-                      : Theme
-                      .of(context)
-                      .iconTheme
-                      .color;
+                      : Theme.of(context).iconTheme.color;
                 });
               })),
     );
   }
-
 
   TextFormField buildEmailTextField() {
     return TextFormField(
@@ -329,7 +323,6 @@ class _RegisterPageState extends State<RegisterPage> {
 //
 //    );
 //  }
-
 
   Padding buildTitleLine() {
     return Padding(

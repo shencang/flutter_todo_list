@@ -39,28 +39,28 @@ class _WelcomePageState extends State<WelcomePage>
 
   _goHomePage() {
     Navigator.of(context).pushNamedAndRemoveUntil(
-        PageConstance.HOME_PAGE, (Route<dynamic> route) => false);
+        PageConstance.LOGIN_PAGE, (Route<dynamic> route) => false);
   }
 
   _getWelcomeImage() async {
-    String url = AppConstance.makeUrl('services/app_ad_cover.json', null);
-    var response = await http.get(url);
-    print(response.body);
-    List list = json.decode(response.body);
-    String cover = '';
-    var item;
-    for (item in list) {
-      cover = item['field_app_ad_cover'];
-      if (cover != null && cover.isNotEmpty) {
-        cover = StringUtil.getSrcImagePath(cover);
-        break;
-      }
-    }
+   // String url = AppConstance.makeUrl('services/app_ad_cover.json', null);
+   // var response = await http.get(url);
+  //  print(response.body);
+  //  List list = json.decode(response.body);
+//    String cover = '';
+//    var item;
+//    for (item in list) {
+//      cover = item['field_app_ad_cover'];
+//      if (cover != null && cover.isNotEmpty) {
+//        cover = StringUtil.getSrcImagePath(cover);
+//        break;
+//      }
+//    }
 
-    print('cover===$cover');
-    setState(() {
-      welcomeImageUrl = cover;
-    });
+//    print('cover===$cover');
+//    setState(() {
+//      welcomeImageUrl = cover;
+//    });
   }
 
   @override

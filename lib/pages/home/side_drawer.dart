@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/bloc/bloc_provider.dart';
+import 'package:flutter_todo_list/myHttp/api.dart';
+import 'package:flutter_todo_list/myHttp/model/user.dart';
+import 'package:flutter_todo_list/myHttp/model_state_info.dart';
 import 'package:flutter_todo_list/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_todo_list/pages/labels/label_db.dart';
 import 'package:flutter_todo_list/pages/projects/project_db.dart';
@@ -15,11 +18,13 @@ import 'package:flutter_todo_list/pages/projects/project_widget.dart';
 import 'package:flutter_todo_list/pages/user/userpage.dart';
 import 'package:flutter_todo_list/pages/login/login_page.dart';
 import 'package:flutter_todo_list/pages/settings/settings_page.dart';
+import 'package:flutter_todo_list/utils/loading.dart';
 
 
 ///侧滑栏的UI
 class SideDrawer extends StatelessWidget {
   static bool loginStatus =false;
+  //static user userShow= GetInfo.userShow;
   @override
   Widget build(BuildContext context) {
     HomeBloc homeBloc = BlocProvider.of(context);
@@ -28,14 +33,14 @@ class SideDrawer extends StatelessWidget {
         padding: EdgeInsets.all(0.0),
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text("登录以查看更多"),
+            accountName: Text(GetInfo.userShow == null?"登录以查看更多":GetInfo.userShow.username),
             onDetailsPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute<bool>(builder: (context) => UserScreen()),
               );
             },
-            accountEmail: Text("行知"),
+            accountEmail: Text(GetInfo.userShow==null?"行知":GetInfo.userShow.userSignature),
             otherAccountsPictures: <Widget>[
 
               IconButton(
@@ -58,9 +63,10 @@ class SideDrawer extends StatelessWidget {
                  icon:
                  new CircleAvatar(
                    radius: 36.0,
-                   backgroundImage: AssetImage(
-                       "assets/profile_pics.jpg",
-                   ),
+                   backgroundImage:NetworkImage(Api.BaseUrl_com+GetInfo.userShow.userAvatar),
+//                   AssetImage(
+////                       "assets/profile_pics.jpg",
+////                   ),
                  ),
                  onPressed: () {
                    Navigator.push(
@@ -120,7 +126,17 @@ class SideDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute<bool>(
                       builder: (context) => (LoginPage())),
+
                 );
+//                Navigator.push<String>(context,
+//                    new MaterialPageRoute(builder: (BuildContext context){
+//                  return new LoginPage();
+//                })).then( (String result){
+//                  //处理代码
+//                  print('!!!!!!!!!!!!!!!!!!!!!!!');
+//                  print(result);
+//
+//                });
               },
 //            onTap: () {
 //              homeBloc.applyFilter("关于", Filter.byNextWeek());

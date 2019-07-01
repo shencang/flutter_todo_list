@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/myHttp/model/user.dart';
+import 'package:flutter_todo_list/myHttp/model_state_info.dart';
 import 'package:flutter_todo_list/utils/loading.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:flutter_todo_list/pages/register/register_page.dart';
 
+import '../../todo_list.dart';
 import 'login_bloc.dart';
 
 ///登录页面UI
@@ -161,35 +164,63 @@ class _LoginPageState extends State<LoginPage> {
                             if (snapshot.hasData) {
                               Response response = snapshot.data;
                               print(response.toString());
-                              if (response.data['id']=='1'){
+                              if (response.data['id'] == '1') {
                                 loginStatus = true;
-                                return Text("${response.data['message']}"
-                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                                String tip = response.data['message'];
+                                return FutureBuilder(
+                                    future: _login.findUserInfoR(_email),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Response> snapshot) {
+                                      /*表示数据成功返回*/
+                                      if (snapshot.hasData) {
+                                        Response response = snapshot.data;
+                                        print(response.toString());
+                                        GetInfo.userShow =
+                                            user.fromJson(snapshot.data.data);
+                                        return Text(
+                                          tip,
+                                          style: TextStyle(fontSize: 30),
+                                          textAlign: TextAlign.center,
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Text("发生错误");
+                                      } else {
+                                        return LoadingWidget();
+                                      }
+                                    });
 
-                              }
-                              else{
+//                                  Text(
+//                                  "${response.data['message']}",
+//                                  style: TextStyle(fontSize: 30),
+//                                  textAlign: TextAlign.center,
+//                                );
+                              } else {
                                 loginStatus = false;
-                                return Text("${response.data['message']}"
-                                  ,style: TextStyle(fontSize: 30),textAlign: TextAlign.center,);
+                                return Text(
+                                  "${response.data['message']}",
+                                  style: TextStyle(fontSize: 30),
+                                  textAlign: TextAlign.center,
+                                );
                               }
-
                             } else {
                               return LoadingWidget();
                             }
                           })
                     ],
                   );
-
                 },
               ).then((val) {
                 print(val);
-                if(loginStatus){
-                  Navigator.pop(context);
+                if (loginStatus) {
+                  print(GetInfo.userShow.userEmail);
+                  Navigator.pushReplacement(context,
+                      new MaterialPageRoute(builder: (BuildContext context) {
+                    return new MyApp();
+                  }));
+                  //Navigator.pop(context,_email);
+
                 }
               });
-
-
-
             }
           },
           shape: StadiumBorder(side: BorderSide()),
