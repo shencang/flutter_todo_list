@@ -305,25 +305,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-//  Row avatarRowContainer() {
-//    return Row(
-//      mainAxisAlignment: MainAxisAlignment.center,
-//      children: <Widget>[
-//        Container(
-//          width: 120.0,
-//          height: 120.0,
-//          decoration: BoxDecoration(
-//            shape: BoxShape.circle,
-//            image: DecorationImage(
-//                fit: BoxFit.cover,
-//                image: AssetImage(
-//                    "assets/avatar/man.png")),
-//          ),)
-//      ],
-//
-//    );
-//  }
-
   Padding buildTitleLine() {
     return Padding(
       padding: EdgeInsets.only(left: 12.0, top: 4.0),

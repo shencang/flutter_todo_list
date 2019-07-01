@@ -2,21 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/myHttp/api.dart';
-import 'package:flutter_todo_list/myHttp/model/user.dart';
 import 'package:flutter_todo_list/myHttp/model_state_info.dart';
 import 'package:flutter_todo_list/pages/login/login_page.dart';
-import 'package:flutter_todo_list/pages/user/password_update_page.dart';
-import 'package:flutter_todo_list/pages/user/user_info_page.dart';
-import 'package:flutter_todo_list/utils/app_constant.dart';
-import 'package:flutter_todo_list/utils/app_util.dart';
 
 ///用户界面
-class UserScreen extends StatefulWidget {
+class InfoScreen extends StatefulWidget {
   @override
-  _UserScreen createState() => new _UserScreen();
+  _InfoScreen createState() => new _InfoScreen();
 }
 
-class _UserScreen extends State<UserScreen> {
+class _InfoScreen extends State<InfoScreen> {
   //static user userShow = GetInfo.userShow;
   Image userHeadBlur = new Image.network(
     Api.BaseUrl_com + GetInfo.userShow.userAvatar,
@@ -32,7 +27,7 @@ class _UserScreen extends State<UserScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("用户"),
+        title: Text(GetInfo.userShow.username),
       ),
       body: Container(
         child: Padding(
@@ -66,20 +61,6 @@ class _UserScreen extends State<UserScreen> {
                                             GetInfo.userShow.userAvatar)),
                                   ),
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.only(top: 20),
-                                    child: Text(
-                                      GetInfo.userShow.username,
-                                      style: TextStyle(fontSize: 30),
-                                    )),
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10),
-                                    child: Text(
-                                      GetInfo.userShow.userSignature == null
-                                          ? ""
-                                          : GetInfo.userShow.userSignature,
-                                      style: TextStyle(fontSize: 20),
-                                    ))
                               ],
                             ),
                           ),
@@ -104,47 +85,47 @@ class _UserScreen extends State<UserScreen> {
                         leading:
                             Icon(Icons.assignment_ind, color: Colors.black),
                         title: Text(GetInfo.userShow.username),
-                        subtitle: Text("个人信息"),
-                        onTap: () => Navigator.push(context,
-                            new MaterialPageRoute(builder: (BuildContext context){
-                              return new InfoScreen();
-                            })),
+                        subtitle: Text("姓名"),
+                        //onTap: () => launchURL(GITHUB_URL),
                       ),
                       ListTile(
-                        leading: Icon(Icons.mode_edit, color: Colors.black),
-                        title: Text("账号安全"),
-                        subtitle: Text("密码。账号等"),
-                        onTap: () => Navigator.push(context,
-                            new MaterialPageRoute(builder: (BuildContext context){
-                              return new PassWordModifyScreen();
-                            })),
+                        leading: Icon(Icons.phone_android, color: Colors.black),
+                        title: Text(GetInfo.userShow.userPhone == null
+                            ? "未填写"
+                            : GetInfo.userShow.userPhone),
+                        subtitle: Text("手机号码"),
+                        //onTap: () => launchURL(GITHUB_URL),
                       ),
                       ListTile(
-                        leading: Icon(Icons.chat_bubble_outline,
+                        leading: Icon(Icons.settings_input_component,
                             color: Colors.black),
-                        title: Text("反馈信息"),
-                        subtitle: Text("让行知变得更好"),
-                        onTap: () => launchURL(ISSUE_URL),
+                        title: Text(GetInfo.userShow.userSex == null
+                            ? "未填写"
+                            : GetInfo.userShow.userSex),
+                        subtitle: Text("性别"),
+                        //onTap: () => launchURL(GITHUB_URL),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.perm_identity, color: Colors.black),
+                        title: Text(GetInfo.userShow.userIdentity == null
+                            ? "未填写"
+                            : GetInfo.userShow.userIdentity),
+                        subtitle: Text("用户组"),
+                        //onTap: () => launchURL(GITHUB_URL),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.assignment, color: Colors.black),
+                        title: Text(GetInfo.userShow.userSignature == null
+                            ? "未填写"
+                            : GetInfo.userShow.userSignature),
+                        subtitle: Text("签名"),
+                        //onTap: () => launchURL(GITHUB_URL),
                       ),
                     ],
                   ),
                 ),
               ),
               Padding(padding: EdgeInsetsDirectional.only(top: 10)),
-              MaterialButton(
-                clipBehavior: Clip.antiAlias,
-                height: 50.0,
-                textColor: Colors.white,
-                color: Colors.red,
-                child: new Text("退出登录"),
-                onPressed: () {
-                  GetInfo.userShow = null;
-                  Navigator.pushReplacement(context,
-                      new MaterialPageRoute(builder: (BuildContext context) {
-                    return new LoginPage();
-                  }));
-                },
-              )
             ],
           ),
         ),
