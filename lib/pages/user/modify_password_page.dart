@@ -44,11 +44,16 @@ class _ModifyScreen extends State<ModifyScreen> {
             buildTitle(),
             buildTitleLine(),
             SizedBox(height: 70.0),
-            SizedBox(height: 30.0),
             buildPasswordTextField(context),
-            SizedBox(height: 60.0),
-            buildUpdateButton(context),
             SizedBox(height: 30.0),
+            buildPasswordReTrueTextField(context),
+            SizedBox(height: 30.0),
+            buildNewPasswordTextField(context),
+            SizedBox(height: 30.0),
+            buildUpdateButton(context),
+            SizedBox(height: 20.0),
+            buildTipText(),
+            SizedBox(height: 30.0,)
           ],
         ),
       ),
@@ -62,7 +67,7 @@ class _ModifyScreen extends State<ModifyScreen> {
         width: 270.0,
         child: RaisedButton(
           child: Text(
-            '登录',
+            '修改',
             style: Theme.of(context).primaryTextTheme.headline,
           ),
           color: Colors.black,
@@ -70,6 +75,8 @@ class _ModifyScreen extends State<ModifyScreen> {
             if (_formKey.currentState.validate()) {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
+              print(GetInfo.userShow.userEmail);
+              print(_newPassword);
               //getLoginStatus();
               showDialog<Null>(
                 context: context,
@@ -87,6 +94,7 @@ class _ModifyScreen extends State<ModifyScreen> {
                               Response response = snapshot.data;
                               print(response.toString());
                               if (response.data['id'] == '1') {
+                                print("验证登录成功");
                                 return FutureBuilder(
                                     future: _userBloc.updatePasswordR(
                                         GetInfo.userShow.userEmail,
@@ -113,7 +121,9 @@ class _ModifyScreen extends State<ModifyScreen> {
                                           );
                                         }
                                       } else if (snapshot.hasError) {
-                                        return Text("发生错误");
+                                        return Text("发生错误",
+                                            style: TextStyle(fontSize: 30),
+                                            textAlign: TextAlign.center);
                                       } else {
                                         return LoadingWidget();
                                       }
@@ -136,7 +146,11 @@ class _ModifyScreen extends State<ModifyScreen> {
                 print(val);
                 if (_isModify) {
                   print(GetInfo.userShow.userEmail);
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(context,
+                      new MaterialPageRoute(builder: (BuildContext context) {
+                        GetInfo.userShow = null;
+                    return new LoginPage();
+                  }));
 
                   //Navigator.pop(context,_email);
 
@@ -157,6 +171,8 @@ class _ModifyScreen extends State<ModifyScreen> {
       validator: (String value) {
         if (value.isEmpty) {
           return '请输入密码';
+        } else {
+          _password = value;
         }
       },
       decoration: InputDecoration(
@@ -179,7 +195,7 @@ class _ModifyScreen extends State<ModifyScreen> {
 
   TextFormField buildNewPasswordTextField(BuildContext context) {
     return TextFormField(
-      onSaved: (String value) => _password = value,
+      onSaved: (String value) => _newPassword = value,
       obscureText: _isObscure,
       validator: (String value) {
         if (value.isEmpty) {
@@ -253,5 +269,14 @@ class _ModifyScreen extends State<ModifyScreen> {
         style: TextStyle(fontSize: 30.0),
       ),
     );
+  }
+
+  Align buildTipText() {
+    return Align(
+        alignment: Alignment.center,
+        child: Text(
+          '修改密码会自动退出登录',
+          style: TextStyle(color: Colors.grey, fontSize: 14.0),
+        ));
   }
 }
