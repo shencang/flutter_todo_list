@@ -27,6 +27,9 @@ class Api{
   static const String FindTask = "findTask/";
   static const String GetTaskByProject = "getTaskByProject/";
   static const String GetTaskByLabel = "getTaskByLabel/";
+  static const String FindTaskByDate = "findTaskByDate/";
+  static const String FindTaskByStatus = "findTaskByStatus/";
+ // static const String
 
 
 
@@ -34,6 +37,7 @@ class Api{
   // 标签的相关方法
   static const String AddLabel = "addLabel/";
   static const String FindLabel = "findLabel/";
+  static const String FindLabelRep = "findLabelRepeat/";
 
   //关系表的相关方法
   static const String AddRelation = "addRelation/";

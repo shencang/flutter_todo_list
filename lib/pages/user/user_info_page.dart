@@ -51,8 +51,8 @@ class _InfoScreen extends State<InfoScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  width: 120.0,
-                                  height: 120.0,
+                                  width: 200.0,
+                                  height: 200.0,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(

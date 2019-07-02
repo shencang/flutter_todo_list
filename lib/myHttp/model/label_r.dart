@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'label.g.dart';
+part 'label_r.g.dart';
 
 
 @JsonSerializable()
-class Label extends Object {
+class LabelR extends Object {
 
   @JsonKey(name: 'labelId')
   int labelId;
@@ -19,13 +19,13 @@ class Label extends Object {
   int labelColorCode;
 
   @JsonKey(name: 'labelUser')
-  int labelUser;
+  String labelUser;
 
-  Label(this.labelId,this.labelName,this.labelColorName,this.labelColorCode,this.labelUser,);
+  LabelR(this.labelId,this.labelName,this.labelColorName,this.labelColorCode,this.labelUser,);
 
-  factory Label.fromJson(Map<String, dynamic> srcJson) => _$LabelFromJson(srcJson);
+  factory LabelR.fromJson(Map<String, dynamic> srcJson) => _$LabelRFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$LabelToJson(this);
+  Map<String, dynamic> toJson() => _$LabelRToJson(this);
 
 }
 

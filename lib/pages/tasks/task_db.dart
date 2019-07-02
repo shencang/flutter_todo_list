@@ -1,4 +1,11 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_todo_list/db/app_db.dart';
+import 'package:flutter_todo_list/myHttp/api.dart';
+import 'package:flutter_todo_list/myHttp/fun.dart';
+import 'package:flutter_todo_list/myHttp/model/task_r.dart';
+import 'package:flutter_todo_list/myHttp/model_state_info.dart';
 import 'package:flutter_todo_list/pages/tasks/models/tasks.dart';
 import 'package:flutter_todo_list/pages/projects/project.dart';
 import 'package:flutter_todo_list/pages/labels/label.dart';
@@ -41,8 +48,14 @@ class TaskDB {
         'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
         'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
         'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} $whereClause GROUP BY ${Tasks.tblTask}.${Tasks.dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
+    print(
+        'SELECT ${Tasks.tblTask}.*,${Project.tblProject}.${Project.dbName},${Project.tblProject}.${Project.dbColorCode},group_concat(${Label.tblLabel}.${Label.dbName}) as labelNames '
+        'FROM ${Tasks.tblTask} LEFT JOIN ${TaskLabels.tblTaskLabel} ON ${TaskLabels.tblTaskLabel}.${TaskLabels.dbTaskId}=${Tasks.tblTask}.${Tasks.dbId} '
+        'LEFT JOIN ${Label.tblLabel} ON ${Label.tblLabel}.${Label.dbId}=${TaskLabels.tblTaskLabel}.${TaskLabels.dbLabelId} '
+        'INNER JOIN ${Project.tblProject} ON ${Tasks.tblTask}.${Tasks.dbProjectID} = ${Project.tblProject}.${Project.dbId} $whereClause GROUP BY ${Tasks.tblTask}.${Tasks.dbId} ORDER BY ${Tasks.tblTask}.${Tasks.dbDueDate} ASC;');
     print('?????????????????????????????');
     print(result);
+
     return _bindData(result);
   }
 
@@ -129,5 +142,117 @@ class TaskDB {
         });
       }
     });
+  }
+
+  Future<List<TaskR>> getTasksR(
+      {int startDate = 0, int endDate = 0, TaskStatus taskStatus}) async {
+    Fun fun = new Fun();
+    Response response;
+    //Map<String, dynamic> user = {'userEmail':email,'password':password};
+    if (startDate > 0 && endDate > 0) {
+      Map<String, dynamic> get = {
+        'userId': GetInfo.userShow.userId,
+        'startDate': startDate,
+        'endDate': endDate
+      };
+      response = await fun.labelPostsR(Api.FindTaskByDate, get);
+    } else {}
+    if (taskStatus != null) {
+      Map<String, dynamic> get = {'userId': GetInfo.userShow.userId};
+      response = await fun.labelPostsR(Api.FindTaskByStatus, get);
+    } else {
+      Map<String, dynamic> get = {'userId': GetInfo.userShow.userId};
+      response = await fun.labelPostsR(Api.FindTask, get);
+    }
+    List responseList = json.decode(response.data);
+    List pro = getTaskList(responseList);
+    return pro;
+  }
+
+  List<TaskR> getTaskList(List<dynamic> list) {
+    print(list);
+    List<TaskR> result = [];
+    list.forEach((item) {
+      print("!!!!");
+      result.add(TaskR.fromJson(item));
+    });
+    return result;
+  }
+
+  Future<List<Tasks>> getTasksByProjectR(int projectId,
+      {TaskStatus status}) async {
+    Fun fun = new Fun();
+    Response response;
+    if (status != null) {
+      Map<String, dynamic> get = {
+        'projectId': projectId,
+        'taskStatus': status.index
+      };
+      response = await fun.labelPostsR(Api.GetTaskByProject, get);
+    } else {
+      Map<String, dynamic> get = {
+        'projectId': projectId,
+      };
+      response = await fun.labelPostsR(Api.GetTaskByProject, get);
+    }
+    List responseList = json.decode(response.data);
+    List pro = getTaskList(responseList);
+    return _bindData(pro);
+  }
+
+  Future<List<Tasks>> getTasksByLabelR(String labelName,String labelId,
+      {TaskStatus status}) async {
+    Fun fun = new Fun();
+    Response response;
+    if(status != null){
+      Map<String, dynamic> get = {
+        'labelId': labelId,
+        'taskStatus': status.index
+      };
+      response = await fun.labelPostsR(Api.GetTaskByLabel, get);
+    }
+    else{
+      Map<String, dynamic> get = {
+        'labelId': labelId,
+      };
+      response = await fun.labelPostsR(Api.GetTaskByLabel, get);
+    }
+    List responseList = json.decode(response.data);
+    List pro = getTaskList(responseList);
+
+    return _bindData(pro);
+  }
+
+  Future deleteTaskR(int taskID) async {
+    Map<String, dynamic> del = {'taskId':taskID};
+    //Map<String, dynamic> user = {'userEmail':email,'password':password};
+    Fun fun = new Fun();
+    return await fun.messagePostR(Api.DeleteTask, del);
+
+  }
+
+  Future updateTaskStatusR(int taskID, TaskStatus status) async {
+    Map<String, dynamic> up = {'taskId': taskID,'taskStatus': status};
+    //Map<String, dynamic> user = {'userEmail':email,'password':password};
+    Fun fun = new Fun();
+    return await fun.messagePostR(Api.UpdateTask, up);
+  }
+
+  /// Inserts or replaces the task.
+  Future updateTaskR(Tasks task, {List<int> labelIDs}) async {
+    Map<String, dynamic> up = {'taskId': task.id, 'taskTitles': task.title,
+      'taskComment': task.comment, 'taskDueDate': task.tasksStatus,
+      'taskPriority': task.priority, 'taskProjectId': task.projectId,
+      'taskUserId': GetInfo.userShow.userId, 'taskStatus': task.tasksStatus};
+    Fun fun = new Fun();
+   // return await fun.messagePostR(Api.UpdateTask, up);
+//    if (id > 0 && labelIDs != null && labelIDs.length > 0) {
+//        labelIDs.forEach((labelId) {
+//          txn.rawInsert('INSERT OR REPLACE INTO '
+//              '${TaskLabels.tblTaskLabel}(${TaskLabels.dbId},${TaskLabels.dbTaskId},${TaskLabels.dbLabelId})'
+//              ' VALUES(null, $id, $labelId)');
+//        });
+//      }
+    return await fun.messagePostR(Api.UpdateTask, up);
   }
 }

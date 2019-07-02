@@ -1,7 +1,11 @@
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_todo_list/db/app_db.dart';
 import 'package:flutter_todo_list/myHttp/api.dart';
 import 'package:flutter_todo_list/myHttp/fun.dart';
+import 'package:flutter_todo_list/myHttp/model/project_r.dart';
 import 'package:flutter_todo_list/myHttp/model_state_info.dart';
 import 'package:flutter_todo_list/pages/projects/project.dart';
 import 'package:sqflite/sqflite.dart';
@@ -73,16 +77,24 @@ class ProjectDB {
     return await fun.messagePostR(Api.AddProject, create);
 
   }
-  Future<List<Project>> getProjectsR({bool isInboxVisible = true}) async {
-    //var whereClause = isInboxVisible ?  : " WHERE ${Project.dbId}!=1;";
-//    Map<String, dynamic> pros = {'userId':GetInfo.userShow.userId};
-//    Fun fun = new Fun();
-//    await fun.
-//    List<Project> projects = List();
-//    for (Map<String, dynamic> item in result) {
-//      var myProject = Project.fromMap(item);
-//      projects.add(myProject);
-//    }
-//    return projects;
+  Future<List<ProjectR>> getProjectsR({bool isInboxVisible = true}) async {
+    Map<String, dynamic> emails = {'userId':GetInfo.userShow.userId };
+    //Map<String, dynamic> user = {'userEmail':email,'password':password};
+    Fun fun = new Fun();
+    Response response = await fun.projectPostsR(Api.FindProject, emails);
+    List responseList = json.decode(response.data);
+    List pro = getProjectList(responseList);
+    return pro;
+
+  }
+
+  List<ProjectR> getProjectList(List<dynamic> list){
+    print(list);
+    List<ProjectR> result = [];
+    list.forEach((item){
+      print("!!!!");
+      result.add(ProjectR.fromJson(item));
+    });
+    return result;
   }
 }

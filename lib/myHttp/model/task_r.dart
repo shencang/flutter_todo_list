@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'task.g.dart';
+part 'task_r.g.dart';
 
 
 @JsonSerializable()
-class Task extends Object {
+class TaskR extends Object {
 
   @JsonKey(name: 'taskId')
   int taskId;
@@ -22,19 +22,19 @@ class Task extends Object {
   int taskPriority;
 
   @JsonKey(name: 'taskProjectId')
-  int taskProjectId;
+  String taskProjectId;
 
   @JsonKey(name: 'taskUserId')
-  int taskUserId;
+  String taskUserId;
 
   @JsonKey(name: 'taskStatus')
   int taskStatus;
 
-  Task(this.taskId,this.taskTitles,this.taskComment,this.taskDueDate,this.taskPriority,this.taskProjectId,this.taskUserId,this.taskStatus,);
+  TaskR(this.taskId,this.taskTitles,this.taskComment,this.taskDueDate,this.taskPriority,this.taskProjectId,this.taskUserId,this.taskStatus,);
 
-  factory Task.fromJson(Map<String, dynamic> srcJson) => _$TaskFromJson(srcJson);
+  factory TaskR.fromJson(Map<String, dynamic> srcJson) => _$TaskRFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$TaskToJson(this);
+  Map<String, dynamic> toJson() => _$TaskRToJson(this);
 
 }
 

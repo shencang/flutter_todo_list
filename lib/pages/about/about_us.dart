@@ -82,11 +82,18 @@ class AboutUsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+//                          ListTile(
+//                            leading: Icon(Icons.wb_incandescent,
+//                                color: Colors.black),
+//                            title: Text("WhatTodo"),
+//                            subtitle: Text("burhanrashid52"),
+//                            onTap: () => launchURL(AUTHOR_URL),
+//                          ),
                           ListTile(
                             leading: Icon(Icons.wb_incandescent,
                                 color: Colors.black),
-                            title: Text("WhatTodo"),
-                            subtitle: Text("burhanrashid52"),
+                            title: Text("flutter"),
+                            subtitle: Text("github"),
                             onTap: () => launchURL(AUTHOR_URL),
                           ),
                         ],
