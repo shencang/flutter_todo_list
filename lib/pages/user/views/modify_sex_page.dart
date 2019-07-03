@@ -5,17 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/myHttp/api.dart';
 import 'package:flutter_todo_list/myHttp/model_state_info.dart';
 import 'package:flutter_todo_list/pages/login/login_page.dart';
+import 'package:flutter_todo_list/pages/register/register_bloc.dart';
 import 'package:flutter_todo_list/pages/user/user_bloc.dart';
 import 'package:flutter_todo_list/utils/app_constant.dart';
 import 'package:flutter_todo_list/utils/loading.dart';
 
 ///用户界面
-class ModifyEmailScreen extends StatefulWidget {
+class ModifySexScreen extends StatefulWidget {
   @override
-  _ModifyEmailScreen createState() => new _ModifyEmailScreen();
+  _ModifySexScreen createState() => new _ModifySexScreen();
 }
 
-class _ModifyEmailScreen extends State<ModifyEmailScreen> {
+class _ModifySexScreen extends State<ModifySexScreen> {
   String _password, _newPassword;
   bool _isObscure = true, _isModify = false;
   UserBloc _userBloc = new UserBloc();
@@ -26,6 +27,16 @@ class _ModifyEmailScreen extends State<ModifyEmailScreen> {
   Image userHead = new Image.network(
     Api.BaseUrl_com + GetInfo.userShow.userAvatar,
   );
+
+  bool _isRegister =false;
+
+  bool _emailRepat = false;
+
+  String _newvalue;
+
+  var _genderSelect;
+
+  String _sex;
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +55,7 @@ class _ModifyEmailScreen extends State<ModifyEmailScreen> {
             buildTitle(),
             buildTitleLine(),
             SizedBox(height: 70.0),
-            buildPasswordTextField(context),
-            SizedBox(height: 30.0),
-            buildPasswordReTrueTextField(context),
-            SizedBox(height: 30.0),
-            buildNewPasswordTextField(context),
+            selectSex(),
             SizedBox(height: 30.0),
             buildUpdateButton(context),
             SizedBox(height: 20.0),
@@ -85,61 +92,46 @@ class _ModifyEmailScreen extends State<ModifyEmailScreen> {
                     title: new Text('正在执行'),
                     children: <Widget>[
                       FutureBuilder(
-                          future: _userBloc.loginEmailR(
-                              GetInfo.userShow.userEmail, _password),
+                          future: _userBloc.updateUserInfoR
+                            (GetInfo.userShow.userId,
+                              'userSex',
+                              _sex),
                           builder: (BuildContext context,
                               AsyncSnapshot<Response> snapshot) {
                             /*表示数据成功返回*/
                             if (snapshot.hasData) {
                               Response response = snapshot.data;
                               print(response.toString());
-                              if (response.data['id'] == '1') {
-                                print("验证登录成功");
-                                //TODO 需要完成
-                                return FutureBuilder(
-                                    future: _userBloc.updatePasswordR(
-                                        GetInfo.userShow.userEmail,
-                                        _newPassword),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<Response> snapshot) {
-                                      /*表示数据成功返回*/
-                                      if (snapshot.hasData) {
-                                        Response response = snapshot.data;
-                                        print(response.toString());
-                                        if (response.data['id'] == '0') {
-                                          _isModify = true;
-                                          return new Text(
-                                            "修改成功",
-                                            style: TextStyle(fontSize: 30),
-                                            textAlign: TextAlign.center,
-                                          );
-                                        } else {
-                                          _isModify = false;
-                                          return new Text(
-                                            "修改失败",
-                                            style: TextStyle(fontSize: 30),
-                                            textAlign: TextAlign.center,
-                                          );
-                                        }
-                                      } else if (snapshot.hasError) {
-                                        return Text("发生错误",
-                                            style: TextStyle(fontSize: 30),
-                                            textAlign: TextAlign.center);
-                                      } else {
-                                        return LoadingWidget();
-                                      }
-                                    });
+                              if (response.data['id'] == '0') {
+                                _isModify = true;
+                                return Text(
+                                  "${response.data['message']}",
+                                  style: TextStyle(fontSize: 30),
+                                  textAlign: TextAlign.center,
+                                );
                               } else {
+                                _isModify = false;
                                 return Text(
                                   "${response.data['message']}",
                                   style: TextStyle(fontSize: 30),
                                   textAlign: TextAlign.center,
                                 );
                               }
+                            } else if (snapshot.hasError) {
+                              _isModify = false;
+                              return Text("发生错误");
                             } else {
                               return LoadingWidget();
                             }
-                          })
+                          }
+                      )
+//                                  Text(
+//                                  "${response.data['message']}",
+//                                  style: TextStyle(fontSize: 30),
+//                                  textAlign: TextAlign.center,
+//                                );
+
+
                     ],
                   );
                 },
@@ -147,11 +139,7 @@ class _ModifyEmailScreen extends State<ModifyEmailScreen> {
                 print(val);
                 if (_isModify) {
                   print(GetInfo.userShow.userEmail);
-                  Navigator.pushReplacement(context,
-                      new MaterialPageRoute(builder: (BuildContext context) {
-                        GetInfo.userShow = null;
-                        return new LoginPage();
-                      }));
+                  Navigator.pop(context);
 
                   //Navigator.pop(context,_email);
 
@@ -194,30 +182,17 @@ class _ModifyEmailScreen extends State<ModifyEmailScreen> {
     );
   }
 
-  TextFormField buildNewPasswordTextField(BuildContext context) {
+  TextFormField buildNameTextField() {
     return TextFormField(
-      onSaved: (String value) => _newPassword = value,
-      obscureText: _isObscure,
+      decoration: InputDecoration(
+        labelText: '昵称',
+      ),
       validator: (String value) {
-        if (value.isEmpty) {
-          return '请输入密码';
+        if (value.length<100&&value.length>0) {
+          return '请输入正确的长度';
         }
       },
-      decoration: InputDecoration(
-          labelText: '密码',
-          suffixIcon: IconButton(
-              icon: Icon(
-                Icons.remove_red_eye,
-                color: _eyeColor,
-              ),
-              onPressed: () {
-                setState(() {
-                  _isObscure = !_isObscure;
-                  _eyeColor = _isObscure
-                      ? Colors.grey
-                      : Theme.of(context).iconTheme.color;
-                });
-              })),
+      onSaved: (String value) =>  _newvalue = value,
     );
   }
 
@@ -266,7 +241,7 @@ class _ModifyEmailScreen extends State<ModifyEmailScreen> {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Text(
-        '修改电子邮件',
+        '修改评论',
         style: TextStyle(fontSize: 30.0),
       ),
     );
@@ -276,8 +251,23 @@ class _ModifyEmailScreen extends State<ModifyEmailScreen> {
     return Align(
         alignment: Alignment.center,
         child: Text(
-          '修改邮件会自动退出登录',
+          '修改评论会退出该页面',
           style: TextStyle(color: Colors.grey, fontSize: 14.0),
         ));
+  }
+
+  GenderSelection selectSex() {
+    return GenderSelection(
+      selectCallback: (genderSelect) {
+        _genderSelect = genderSelect;
+        print(_genderSelect);
+        if (_genderSelect == '1') {
+          _sex = '男';
+        } else {
+          _sex = '女';
+        }
+        setState(() {});
+      },
+    );
   }
 }

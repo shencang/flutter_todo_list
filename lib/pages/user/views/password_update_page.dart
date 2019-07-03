@@ -9,7 +9,7 @@ import 'package:flutter_todo_list/pages/user/user_bloc.dart';
 import 'package:flutter_todo_list/utils/app_constant.dart';
 import 'package:flutter_todo_list/utils/loading.dart';
 
-import 'modify_password_page.dart';
+import 'package:flutter_todo_list/pages/user/views/modify_password_page.dart';
 
 ///用户界面
 class PassWordModifyScreen extends StatefulWidget {

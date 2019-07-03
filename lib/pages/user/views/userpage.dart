@@ -2,16 +2,21 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/myHttp/api.dart';
+import 'package:flutter_todo_list/myHttp/model/user.dart';
 import 'package:flutter_todo_list/myHttp/model_state_info.dart';
 import 'package:flutter_todo_list/pages/login/login_page.dart';
+import 'package:flutter_todo_list/pages/user/views/password_update_page.dart';
+import 'package:flutter_todo_list/pages/user/views/user_info_page.dart';
+import 'package:flutter_todo_list/utils/app_constant.dart';
+import 'package:flutter_todo_list/utils/app_util.dart';
 
 ///用户界面
-class InfoScreen extends StatefulWidget {
+class UserScreen extends StatefulWidget {
   @override
-  _InfoScreen createState() => new _InfoScreen();
+  _UserScreen createState() => new _UserScreen();
 }
 
-class _InfoScreen extends State<InfoScreen> {
+class _UserScreen extends State<UserScreen> {
   //static user userShow = GetInfo.userShow;
   Image userHeadBlur = new Image.network(
     Api.BaseUrl_com + GetInfo.userShow.userAvatar,
@@ -27,7 +32,7 @@ class _InfoScreen extends State<InfoScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text(GetInfo.userShow.username),
+        title: Text("用户"),
       ),
       body: Container(
         child: Padding(
@@ -51,8 +56,8 @@ class _InfoScreen extends State<InfoScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  width: 200.0,
-                                  height: 200.0,
+                                  width: 120.0,
+                                  height: 120.0,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
@@ -61,6 +66,20 @@ class _InfoScreen extends State<InfoScreen> {
                                             GetInfo.userShow.userAvatar)),
                                   ),
                                 ),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Text(
+                                      GetInfo.userShow.username,
+                                      style: TextStyle(fontSize: 30),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: Text(
+                                      GetInfo.userShow.userSignature == null
+                                          ? ""
+                                          : GetInfo.userShow.userSignature,
+                                      style: TextStyle(fontSize: 20),
+                                    ))
                               ],
                             ),
                           ),
@@ -85,47 +104,47 @@ class _InfoScreen extends State<InfoScreen> {
                         leading:
                             Icon(Icons.assignment_ind, color: Colors.black),
                         title: Text(GetInfo.userShow.username),
-                        subtitle: Text("姓名"),
-                        //onTap: () => launchURL(GITHUB_URL),
+                        subtitle: Text("个人信息"),
+                        onTap: () => Navigator.push(context,
+                            new MaterialPageRoute(builder: (BuildContext context){
+                              return new InfoScreen();
+                            })),
                       ),
                       ListTile(
-                        leading: Icon(Icons.phone_android, color: Colors.black),
-                        title: Text(GetInfo.userShow.userPhone == null
-                            ? "未填写"
-                            : GetInfo.userShow.userPhone),
-                        subtitle: Text("手机号码"),
-                        //onTap: () => launchURL(GITHUB_URL),
+                        leading: Icon(Icons.mode_edit, color: Colors.black),
+                        title: Text("账号安全"),
+                        subtitle: Text("密码。账号等"),
+                        onTap: () => Navigator.push(context,
+                            new MaterialPageRoute(builder: (BuildContext context){
+                              return new PassWordModifyScreen();
+                            })),
                       ),
                       ListTile(
-                        leading: Icon(Icons.settings_input_component,
+                        leading: Icon(Icons.chat_bubble_outline,
                             color: Colors.black),
-                        title: Text(GetInfo.userShow.userSex == null
-                            ? "未填写"
-                            : GetInfo.userShow.userSex),
-                        subtitle: Text("性别"),
-                        //onTap: () => launchURL(GITHUB_URL),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.perm_identity, color: Colors.black),
-                        title: Text(GetInfo.userShow.userIdentity == null
-                            ? "未填写"
-                            : GetInfo.userShow.userIdentity),
-                        subtitle: Text("用户组"),
-                        //onTap: () => launchURL(GITHUB_URL),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.assignment, color: Colors.black),
-                        title: Text(GetInfo.userShow.userSignature == null
-                            ? "未填写"
-                            : GetInfo.userShow.userSignature),
-                        subtitle: Text("签名"),
-                        //onTap: () => launchURL(GITHUB_URL),
+                        title: Text("反馈信息"),
+                        subtitle: Text("让行知变得更好"),
+                        onTap: () => launchURL(ISSUE_URL),
                       ),
                     ],
                   ),
                 ),
               ),
               Padding(padding: EdgeInsetsDirectional.only(top: 10)),
+              MaterialButton(
+                clipBehavior: Clip.antiAlias,
+                height: 50.0,
+                textColor: Colors.white,
+                color: Colors.red,
+                child: new Text("退出登录"),
+                onPressed: () {
+                  GetInfo.userShow = null;
+                  Navigator.pushReplacement(context,
+                      new MaterialPageRoute(builder: (BuildContext context) {
+                    return new LoginPage();
+                  }));
+                },
+              )
             ],
           ),
         ),

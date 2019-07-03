@@ -15,7 +15,7 @@ import 'package:flutter_todo_list/pages/labels/label_bloc.dart';
 import 'package:flutter_todo_list/pages/labels/label_widget.dart';
 import 'package:flutter_todo_list/pages/projects/project_bloc.dart';
 import 'package:flutter_todo_list/pages/projects/project_widget.dart';
-import 'package:flutter_todo_list/pages/user/userpage.dart';
+import 'package:flutter_todo_list/pages/user/views/userpage.dart';
 import 'package:flutter_todo_list/pages/login/login_page.dart';
 import 'package:flutter_todo_list/pages/settings/settings_page.dart';
 import 'package:flutter_todo_list/utils/loading.dart';
