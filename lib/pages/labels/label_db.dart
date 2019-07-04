@@ -58,6 +58,15 @@ class LabelDB {
     return projects;
   }
 
+  Future deleteLabel(int labelID) async {
+    print('======================>deleteLabel');
+    var db = await _appDatabase.getDb();
+    await db.transaction((Transaction txn) async {
+      await txn.rawDelete(
+          'DELETE FROM ${Label.tblLabel} WHERE ${Label.dbId}==$labelID;');
+    });
+  }
+
 
   Future<bool> isLabelExitsR(Label label) async {
     print('------------------->isLabelExits');

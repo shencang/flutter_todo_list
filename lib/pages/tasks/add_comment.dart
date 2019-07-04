@@ -18,8 +18,17 @@ Future<String> showCommentDialog(BuildContext context) async {
   return await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
+        TextEditingController commController;
         return AlertDialog(
-          content: TextField(),
+          title: Text("输入评论"),
+          content: TextField(
+            controller: commController = TextEditingController(),
+            decoration: InputDecoration(
+              icon: Icon(Icons.text_fields),
+              labelText: '评论',
+            ),
+
+          ),
           actions: <Widget>[
             FlatButton(
                 onPressed: () {
@@ -29,7 +38,17 @@ Future<String> showCommentDialog(BuildContext context) async {
                     style:
                         TextStyle(color: Theme.of(context).accentColor))),
             FlatButton(
-                onPressed:() {},
+                onPressed:() {
+                  if(commController.text.length>100||commController.text.length==0){
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('请输入内容并保存在100字以下'),
+                        ));
+                  }else{
+                    Navigator.pop(context,commController.text);
+                  }
+                },
                 child: Text("保存",
                     style: TextStyle(color: Theme.of(context).accentColor)))
           ],

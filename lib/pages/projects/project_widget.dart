@@ -78,6 +78,13 @@ class ProjectRow extends StatelessWidget {
         homeBloc.applyFilter(project.name, Filter.byProject(project.id));
         Navigator.pop(context);
       },
+      onLongPress: (){
+        ProjectBloc projectBloc = BlocProvider.of<ProjectBloc>(context);
+        projectBloc.deleteProject(project);
+        projectBloc.refresh();
+        Navigator.pop(context);
+        print(project.name);
+      },
       leading: Container(
         width: 24.0,
         height: 24.0,

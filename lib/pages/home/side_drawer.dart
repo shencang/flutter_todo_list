@@ -122,12 +122,23 @@ class SideDrawer extends StatelessWidget {
                 top: MediaQueryData.fromWindow(window).size.height / 4.2),
             child: ListTile(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<bool>(
-                      builder: (context) => (LoginPage())),
+                if(GetInfo.userShow.userId ==null){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<bool>(
+                        builder: (context) => (LoginPage())),
 
-                );
+                  );
+                }else{
+                  Tooltip(
+                      message: "删除",
+                      preferBelow:false,  //设置false就是在上面弹
+                      child: Icon(
+                        Icons.delete,
+                        size: 50.0,
+                      ));
+                }
+
 //                Navigator.push<String>(context,
 //                    new MaterialPageRoute(builder: (BuildContext context){
 //                  return new LoginPage();
@@ -138,12 +149,22 @@ class SideDrawer extends StatelessWidget {
 //
 //                });
               },
+              onLongPress: (){
+                Tooltip(
+                    message: "删除",
+                    preferBelow:false,  //设置false就是在上面弹
+                    child: Icon(
+                      Icons.delete,
+                      size: 50.0,
+                    ));
+                print("长按");
+              },
 //            onTap: () {
 //              homeBloc.applyFilter("关于", Filter.byNextWeek());
 //              Navigator.pop(context);
 //            },
               leading: Icon(Icons.add_circle_outline),
-              title: Text("登录"),
+              title: Text(GetInfo.userShow.userId==null?"登录":"已登录"),
             )
           ),
           ListTile(

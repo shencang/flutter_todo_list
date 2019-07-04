@@ -10,6 +10,8 @@ import 'package:flutter_todo_list/utils/app_util.dart';
 import 'package:flutter_todo_list/utils/color_utils.dart';
 import 'package:flutter_todo_list/utils/date_util.dart';
 
+import 'add_comment.dart';
+
 
 class AddTaskScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldState =
@@ -95,9 +97,20 @@ class AddTaskScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.mode_comment),
             title: Text("评论"),
-            subtitle: Text("没有评论"),
-            onTap: () {
-              showSnackbar(_scaffoldState, "即将到来");
+            subtitle: StreamBuilder(
+              stream: createTaskBloc.commentGet,
+              initialData: "没有评论",
+              builder: (context, snapshot) => Text(snapshot.data),
+            ),
+            onTap: ()  {
+
+              Future<String> ss = showCommentDialog(context).then((onValue){
+                  print(onValue);
+                  createTaskBloc.updateComments(onValue);
+
+              });
+              print(ss);
+
             },
           ),
           ListTile(

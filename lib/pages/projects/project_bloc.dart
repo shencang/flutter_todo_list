@@ -43,6 +43,12 @@ class ProjectBloc implements BlocBase {
       _loadProjects(isInboxVisible);
     });
   }
+  void deleteProject(Project project){
+    _projectDB.deleteProject(project.id).then((onValue){
+      if (onValue == null) return;
+      _loadProjects(isInboxVisible);
+    });
+  }
 
   void updateColorSelection(ColorPalette colorPalette) {
     _colorController.sink.add(colorPalette);

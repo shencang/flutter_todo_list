@@ -79,6 +79,13 @@ class LabelRow extends StatelessWidget {
         homeBloc.applyFilter("@ ${label.name}", Filter.byLabel(label.name));
         Navigator.pop(context);
       },
+      onLongPress: (){
+        LabelBloc labelBloc = BlocProvider.of<LabelBloc>(context);
+        labelBloc.deleteProject(label);
+        labelBloc.refresh();
+        Navigator.pop(context);
+        print(label.name);
+      },
       leading: Container(
         width: 24.0,
         height: 24.0,

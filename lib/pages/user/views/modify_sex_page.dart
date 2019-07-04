@@ -241,7 +241,7 @@ class _ModifySexScreen extends State<ModifySexScreen> {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Text(
-        '修改评论',
+        '修改性别',
         style: TextStyle(fontSize: 30.0),
       ),
     );
@@ -251,7 +251,7 @@ class _ModifySexScreen extends State<ModifySexScreen> {
     return Align(
         alignment: Alignment.center,
         child: Text(
-          '修改评论会退出该页面',
+          '修改性别会退出该页面',
           style: TextStyle(color: Colors.grey, fontSize: 14.0),
         ));
   }

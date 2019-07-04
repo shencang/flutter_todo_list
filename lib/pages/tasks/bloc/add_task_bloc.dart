@@ -51,6 +51,10 @@ class AddTaskBloc implements BlocBase {
 
   Stream<String> get labelSelection => _labelSelected.stream;
 
+  BehaviorSubject<String> _commentGet = BehaviorSubject<String>();
+
+  Stream<String> get commentGet => _commentGet.stream;
+
   List<Label> _selectedLabelList = List();
 
   List<Label> get selectedLabels => _selectedLabelList;
@@ -65,6 +69,8 @@ class AddTaskBloc implements BlocBase {
 
   String updateTitle = "";
 
+  String updateComment ="";
+
   @override
   void dispose() {
     _projectController.close();
@@ -73,6 +79,7 @@ class AddTaskBloc implements BlocBase {
     _labelSelected.close();
     _prioritySelected.close();
     _dueDateSelected.close();
+    _commentGet.close();
   }
 
   void _loadProjects() {
@@ -90,6 +97,7 @@ class AddTaskBloc implements BlocBase {
   void projectSelected(Project project) {
     _projectSelection.add(project);
   }
+
 
   void labelAddOrRemove(Label label) {
     if (_selectedLabelList.contains(label)) {
@@ -119,8 +127,8 @@ class AddTaskBloc implements BlocBase {
   }
 
   Observable<String> createTask() {
-    return Observable.zip3(selectedProject, dueDateSelected, prioritySelected,
-        (Project project, int dueDateSelected, Status status) {
+    return Observable.zip4(selectedProject, dueDateSelected, prioritySelected,commentGet,
+        (Project project, int dueDateSelected, Status status,String comment) {
       List<int> labelIds = List();
       _selectedLabelList.forEach((label) {
         labelIds.add(label.id);
@@ -131,6 +139,7 @@ class AddTaskBloc implements BlocBase {
         dueDate: dueDateSelected,
         priority: status,
         projectId: project.id,
+        comment: comment,
       );
       _taskDB.updateTask(task, labelIDs: labelIds).then((task) {
         Notification.onDone();
@@ -140,5 +149,8 @@ class AddTaskBloc implements BlocBase {
 
   void updateDueDate(int millisecondsSinceEpoch) {
     _dueDateSelected.add(millisecondsSinceEpoch);
+  }
+  void updateComments(String comment) {
+    _commentGet.add(comment);
   }
 }
