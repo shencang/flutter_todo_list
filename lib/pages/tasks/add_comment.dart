@@ -41,6 +41,7 @@ Future<String> showCommentDialog(BuildContext context) async {
                 onPressed:() {
                   if(commController.text.length>100||commController.text.length==0){
                     showDialog(
+                      barrierDismissible: false,
                         context: context,
                         builder: (context) => AlertDialog(
                           title: Text('请输入内容并保存在100字以下'),

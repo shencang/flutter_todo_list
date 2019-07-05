@@ -27,6 +27,13 @@ class _UserScreen extends State<UserScreen> {
   Image userHead = new Image.network(
     Api.BaseUrl_com + GetInfo.userShow.userAvatar,
   );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   // _loadBannerData();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,4 +158,16 @@ class _UserScreen extends State<UserScreen> {
       ),
     );
   }
+//  void _loadBannerData() {
+//    print(GetInfo.needRefresh);
+//    setState((){
+//      if(GetInfo.needRefresh){
+//
+//        GetInfo.userShow =GetInfo.userShow;
+//      }else{
+//        GetInfo.userShow =GetInfo.userShow;
+//      }
+//
+//    });
+//  }
 }

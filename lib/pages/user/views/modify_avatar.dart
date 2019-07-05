@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import '../user_bloc.dart';
+import 'user_info_page.dart';
 
 /// 自定义的上传头像组件。
 class ModifyAvatar extends StatefulWidget {

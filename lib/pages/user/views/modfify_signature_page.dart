@@ -184,7 +184,7 @@ class _ModifySignatureScreen extends State<ModifySignatureScreen> {
         labelText: '昵称',
       ),
       validator: (String value) {
-        if (value.length<100&&value.length>0) {
+        if (value.length>100&&value.length==0) {
           return '请输入正确的长度';
         }
       },

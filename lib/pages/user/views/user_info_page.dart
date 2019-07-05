@@ -20,6 +20,7 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreen extends State<InfoScreen> {
+   bool isModAvatar =true;
   //static user userShow = GetInfo.userShow;
   Image  userHeadBlur = new Image.network(
     Api.BaseUrl_com + GetInfo.userShow.userAvatar,
@@ -30,6 +31,12 @@ class _InfoScreen extends State<InfoScreen> {
   Image userHead = new Image.network(
     Api.BaseUrl_com + GetInfo.userShow.userAvatar,
   );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadBannerData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,19 +149,49 @@ class _InfoScreen extends State<InfoScreen> {
     );
   }
 
-  @override
-  void setState(fn) {
-    // TODO: implement setState
-    super.setState(fn);
+//  @override
+//  void setState(fn) {
+//    // TODO: implement setState
+//    super.setState(fn);
+//    if(GetInfo.needRefresh){
+//      //GetInfo.userShow =GetInfo.userShow;
+//      userHeadBlur = new Image.network(
+//        Api.BaseUrl_com + GetInfo.userShow.userAvatar,
+//        width: MediaQueryData.fromWindow(window).size.width,
+//        height: 300,
+//        fit: BoxFit.fitWidth,
+//      );
+//      print("info_reflash");
+//      GetInfo.needRefresh=false;
+//    }
+//
+//  }
+
+
+void _loadBannerData() {
+  print(GetInfo.needRefresh);
+  setState((){
     if(GetInfo.needRefresh){
+
+      GetInfo.userShow =GetInfo.userShow;
+      GetInfo.needRefresh=false;
       userHeadBlur = new Image.network(
         Api.BaseUrl_com + GetInfo.userShow.userAvatar,
         width: MediaQueryData.fromWindow(window).size.width,
         height: 300,
         fit: BoxFit.fitWidth,
       );
-      print("info_reflash");
+    }else{
+      GetInfo.userShow =GetInfo.userShow;
+      GetInfo.needRefresh=false;
+      userHeadBlur = new Image.network(
+        Api.BaseUrl_com + GetInfo.userShow.userAvatar,
+        width: MediaQueryData.fromWindow(window).size.width,
+        height: 300,
+        fit: BoxFit.fitWidth,
+      );
     }
 
-  }
+  });
+}
 }

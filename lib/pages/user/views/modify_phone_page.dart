@@ -189,7 +189,7 @@ class _ModifyPhoneScreen extends State<ModifyPhoneScreen> {
       validator: (String value) {
         var numReg = RegExp(
             r"[0-9]");
-        if (!numReg.hasMatch(value)) {
+        if (!numReg.hasMatch(value)||value.length!=11) {
           return '请输入正确的手机号码';
         }
       },
