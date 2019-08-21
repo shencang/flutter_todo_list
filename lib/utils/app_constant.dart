@@ -18,8 +18,8 @@ const double FONT_SIZE_DATE = 12.0;
 
 
 const String GITHUB_URL = "https://github.com/shencang";
-const String PROJECT_URL = "https://github.com/shencang/todo_list";
-const String ISSUE_URL = "https://github.com/shencang/todo_list/issues";
+const String PROJECT_URL = "https://github.com/shencang/flutter_todo_list";
+const String ISSUE_URL = "https://github.com/shencang/flutter_todo_list/issues";
 const String README_URL =
     "https://github.com/shencang/todo_list/blob/master/README.md";
 const String EMAIL_URL =

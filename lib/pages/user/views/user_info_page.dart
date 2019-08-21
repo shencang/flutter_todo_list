@@ -175,22 +175,16 @@ void _loadBannerData() {
 
       GetInfo.userShow =GetInfo.userShow;
       GetInfo.needRefresh=false;
-      userHeadBlur = new Image.network(
-        Api.BaseUrl_com + GetInfo.userShow.userAvatar,
-        width: MediaQueryData.fromWindow(window).size.width,
-        height: 300,
-        fit: BoxFit.fitWidth,
-      );
     }else{
       GetInfo.userShow =GetInfo.userShow;
       GetInfo.needRefresh=false;
-      userHeadBlur = new Image.network(
-        Api.BaseUrl_com + GetInfo.userShow.userAvatar,
-        width: MediaQueryData.fromWindow(window).size.width,
-        height: 300,
-        fit: BoxFit.fitWidth,
-      );
     }
+    userHeadBlur = new Image.network(
+      Api.BaseUrl_com + GetInfo.userShow.userAvatar,
+      width: MediaQueryData.fromWindow(window).size.width,
+      height: 300,
+      fit: BoxFit.fitWidth,
+    );
 
   });
 }
